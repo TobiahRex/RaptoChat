@@ -13,7 +13,6 @@ class NavigationDrawer extends Component {
   static propTypes = {
     navigationState: PropTypes.object
   }
-
   render () {
     const state = this.props.navigationState
     const children = state.children
@@ -39,15 +38,6 @@ class NavigationDrawer extends Component {
     )
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
-
+const mapStateToProps = (state) => {}
+const mapDispatchToProps = (dispatch) => {}
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationDrawer)

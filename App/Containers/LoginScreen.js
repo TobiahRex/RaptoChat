@@ -19,6 +19,12 @@ import { Actions as NavigationActions } from 'react-native-router-flux'
 import I18n from '../I18n/I18n.js'
 
 class LoginScreen extends React.Component {
+  static propTypes = {
+    dispatch: PropTypes.func,
+    attempting: PropTypes.bool,
+    close: PropTypes.func,
+    attemptLogin: PropTypes.func
+  }
 
   constructor (props) {
     super(props)
@@ -117,52 +123,45 @@ class LoginScreen extends React.Component {
               value={password}
               editable={editable}
               keyboardType='default'
-              returnKeyType='next' {/* When the user preseds the Return key it will submit the input field. */}
+              returnKeyType='go' {/* When the user preseds the Return key it will submit the input field. */}
               secureTextEntry  {/* same as type='password' */}
               onChangeText={this.handleChangePassword}
               underlineColorAndroid='transparent'
-              onSubmitEditing={this.handlePressLogin}  {/* Contrast to onSubmitEditing inside the TextInput above for 'username', this will actually execute a method attached to the component. */}
+              {/*
+
+                onSubmitEditing={this.handlePressLogin}
+
+              - Contrast to onSubmitEditing inside the TextInput above for 'username', this will actually execute a method attached to the component. */}
               placeholder={I18n.t('password')} />
           </View>
 
           <View style={[Styles.loginRow]}>
+
             <TouchableOpacity style={Styles.loginButtonWrapper} onPress={this.handlePressLogin}>
               <View style={Styles.loginButton}>
                 <Text style={Styles.loginText}>{I18n.t('signIn')}</Text>
               </View>
             </TouchableOpacity>
+
             <TouchableOpacity style={Styles.loginButtonWrapper} onPress={this.props.close}>
               <View style={Styles.loginButton}>
                 <Text style={Styles.loginText}>{I18n.t('cancel')}</Text>
               </View>
             </TouchableOpacity>
+
           </View>
         </View>
 
       </ScrollView>
     )
   }
-
 }
-
-LoginScreen.propTypes = {
-  dispatch: PropTypes.func,
-  attempting: PropTypes.bool,
-  close: PropTypes.func,
-  attemptLogin: PropTypes.func
-}
-
 const mapStateToProps = (state) => {
-  return {
-    attempting: state.login.attempting
-  }
+  attempting: state.login.attempting
 }
-
 const mapDispatchToProps = (dispatch) => {
-  return {
     close: NavigationActions.pop,
     attemptLogin: (username, password) => dispatch(Actions.attemptLogin(username, password))
   }
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)
