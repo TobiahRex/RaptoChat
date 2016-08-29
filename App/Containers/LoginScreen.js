@@ -34,7 +34,6 @@ class LoginScreen extends React.Component {
   componentWillReceiveProps (newProps) {
     this.forceUpdate()
     // Did the login attempt complete?
-    console.log('newProps: ', newProps);
     if (this.isAttempting && !newProps.attempting) {
       this.props.close()
     }
@@ -101,12 +100,12 @@ class LoginScreen extends React.Component {
               ref='username'
               style={textInputStyle}
               value={username}
-              editable={editable}
+              editable={editable} {/* Need to know if we're already trying to sign in.  If we are, then we cannot allow the user to try and edit their username.  */}
               keyboardType='default'
-              returnKeyType='next'
+              returnKeyType='next'  {/* When the user presses the Return key, it will forward them to the next line. */}
               onChangeText={this.handleChangeUsername}
               underlineColorAndroid='transparent'
-              onSubmitEditing={() => this.refs.password.focus()}
+              onSubmitEditing={() => this.refs.password.focus()}  {/* I believe this forces the focus on the password input if the user only inputs their Username, and presses 'submit'. */}
               placeholder={I18n.t('username')} />
           </View>
 
@@ -118,11 +117,11 @@ class LoginScreen extends React.Component {
               value={password}
               editable={editable}
               keyboardType='default'
-              returnKeyType='go'
-              secureTextEntry
+              returnKeyType='next' {/* When the user preseds the Return key it will submit the input field. */}
+              secureTextEntry  {/* same as type='password' */}
               onChangeText={this.handleChangePassword}
               underlineColorAndroid='transparent'
-              onSubmitEditing={this.handlePressLogin}
+              onSubmitEditing={this.handlePressLogin}  {/* Contrast to onSubmitEditing inside the TextInput above for 'username', this will actually execute a method attached to the component. */}
               placeholder={I18n.t('password')} />
           </View>
 
