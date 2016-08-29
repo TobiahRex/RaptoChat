@@ -12,11 +12,13 @@ import { connect } from 'react-redux'
 import styles from './Styles/LoginScreenStyle'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { Metrics } from '../Themes'
+import I18n from '../I18n/I18n.js'
 
 class RegisterScreen extends React.Component {
 
   static propTypes = {
-    loginScreen: PropTypes.func
+    loginScreen: PropTypes.func,
+    attempting: PropTypes.bool,
   }
 
   constructor(props, context) {
@@ -29,9 +31,9 @@ class RegisterScreen extends React.Component {
       passwordVerify: '',
       visibleHeight: Metrics.screenHeight
     }
-    this.setEmail = this.setEmail.bind(this);
-    this.setPassword = this.setPassword.bind(this);
-    this.confirmPassword = this.confirmPassword.bind(this);
+    // this.setEmail = this.setEmail.bind(this);
+    // this.setPassword = this.setPassword.bind(this);
+    // this.confirmPassword = this.confirmPassword.bind(this);
   }
 
   componentWillMount () {
@@ -55,44 +57,83 @@ class RegisterScreen extends React.Component {
     this.setState({ visibleHeight: Metrics.screenHeight })
   }
 
-  setEmail (text){
+  setEmail = (text) => {
     this.setState({ email: text })
   }
 
-  setPassword (text){
+  setPassword = (text) => {
     this.setState({ password: text })
   }
 
-  confirmPassword (text){
+  confirmPassword = (text) => {
     this.setState({ passwordVerify: text })
   }
 
   render() {
+    const { email, password, passwordVerify } = this.state
+    const { attempting } = this.props
+    const editable = !attempting
+    const textInputStyle = editable ? styles.textInput : styles.textInputReadOnly
     return (
       <ScrollView contentContainerStyle={{justifyContent: 'center'}} style={[styles.container, {height: this.state.visibleHeight}]}>
 
         <Text>Register</Text>
 
-        <View>
-          <Text style={styles.feedback} />
+        <View style={styles.form}>
+          <View style={styles.row}>
 
-          <TextInput
-            onChangeText={this.setEmail}
-            placeholder='Email'
-            style={styles.input}
-            />
-          <TextInput
-            onChangeText={this.setPassword}
-            placeholder='Password'
-            style={styles.input}
-            secureTextEntry
-            />
-          <TextInput
-            onChangeText={this.confirmPassword}
-            placeholder='Confirm Password'
-            style={styles.input}
-            secureTextEntry
-            />
+            <Text style={styles.rowLabel}>
+              Email
+            </Text>
+
+            <TextInput
+              ref='email'
+              placeholder='trex@tobiahrex.com'
+              onChangeText={this.setEmail}
+              value={email}
+              editable={editable}
+              keyboardType='default'
+              returnKeyType='next'
+              onSubmitEditing={() => this.refs.password.focus()}
+              style={textInputStyle}
+              />
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.rowLabel}>
+              {I18n.t('password')}
+            </Text>
+            <TextInput
+              ref='password'
+              placeholder='Password'
+              onChangeText={this.setPassword}
+              value={password}
+              editable={editable}
+              keyboardType='default'
+              returnKeyType='next'
+              onSubmitEditing={() => this.refs.passwordConfirm.focus()}
+              secureTextEntry
+              style={textInputStyle}
+              />
+          </View>
+
+          <View style={styles.row}>
+            <Text style={styles.rowLabel}>
+              Confirm Password
+            </Text>
+
+            <TextInput
+              ref='passwordConfirm'
+              placeholder='Password'
+              onChangeText={this.confirmPassword}
+              value={passwordVerify}
+              editable={editable}
+              keyboardType='default'
+              returnKeyType='next'
+              onSubmitEditing={this.confirmPassword}
+              style={styles.input}
+              secureTextEntry />
+          </View>
 
           <TouchableOpacity style={styles.buttonContainer}
             onPress={this.register} >
@@ -105,9 +146,16 @@ class RegisterScreen extends React.Component {
             </TouchableOpacity>
           </View>
 
+
         </View>
       </ScrollView>
     )
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    attempting: state.login.attempting
   }
 }
 
@@ -117,4 +165,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(RegisterScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen)
