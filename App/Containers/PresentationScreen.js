@@ -34,6 +34,10 @@ class PresentationScreen extends React.Component {
             Login
           </RoundedButton>
 
+          <RoundedButton onPress={this.props.register}>
+            Register
+          </RoundedButton>
+
         </ScrollView>
       </View>
     )
@@ -48,6 +52,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     login: NavigationActions.login,
+    register: NavigationActions.register,
   }
 }
 

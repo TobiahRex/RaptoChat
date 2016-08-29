@@ -106,12 +106,12 @@ class LoginScreen extends React.Component {
               ref='username'
               style={textInputStyle}
               value={username}
-              editable={editable} {/* Need to know if we're already trying to sign in.  If we are, then we cannot allow the user to try and edit their username.  */}
+              editable={editable}
               keyboardType='default'
-              returnKeyType='next'  {/* When the user presses the Return key, it will forward them to the next line. */}
+              returnKeyType='next'
               onChangeText={this.handleChangeUsername}
               underlineColorAndroid='transparent'
-              onSubmitEditing={() => this.refs.password.focus()}  {/* I believe this forces the focus on the password input if the user only inputs their Username, and presses 'submit'. */}
+              onSubmitEditing={() => this.refs.password.focus()}
               placeholder={I18n.t('username')} />
           </View>
 
@@ -123,15 +123,10 @@ class LoginScreen extends React.Component {
               value={password}
               editable={editable}
               keyboardType='default'
-              returnKeyType='go' {/* When the user preseds the Return key it will submit the input field. */}
-              secureTextEntry  {/* same as type='password' */}
+              returnKeyType='go'
+              secureTextEntry
               onChangeText={this.handleChangePassword}
               underlineColorAndroid='transparent'
-              {/*
-
-                onSubmitEditing={this.handlePressLogin}
-
-              - Contrast to onSubmitEditing inside the TextInput above for 'username', this will actually execute a method attached to the component. */}
               placeholder={I18n.t('password')} />
           </View>
 
@@ -157,11 +152,14 @@ class LoginScreen extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  attempting: state.login.attempting
+  return {
+    attempting: state.login.attempting
+  }
 }
 const mapDispatchToProps = (dispatch) => {
+  return {
     close: NavigationActions.pop,
     attemptLogin: (username, password) => dispatch(Actions.attemptLogin(username, password))
   }
-
+}
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

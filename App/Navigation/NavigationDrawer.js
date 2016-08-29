@@ -32,12 +32,16 @@ class NavigationDrawer extends Component {
         tweenHandler={(ratio) => ({
           main: { opacity: Math.max(0.54, 1 - ratio) }
         })}
-      >
+        >
         <DefaultRenderer navigationState={children[0]} onNavigate={this.props.onNavigate} />
       </Drawer>
     )
   }
 }
-const mapStateToProps = (state) => {}
-const mapDispatchToProps = (dispatch) => {}
+const mapStateToProps = (state) => {
+  return {}
+}
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationDrawer)
