@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "153992407078",
+    "firebase_url": "https://raptochat.firebaseio.com",
+    "project_id": "raptochat",
+    "storage_bucket": "raptochat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153992407078:android:7f33e7e279151535",
+        "android_client_info": {
+          "package_name": "com.raptochat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153992407078-barp39uv9ijsrh1jl1cluobtr38jv9js.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.raptochat",
+            "certificate_hash": "EF779FFCB895C29DD71C8C5D75C7C3509FFC34E0"
+          }
+        },
+        {
+          "client_id": "153992407078-lr23t0e7761q74p8dq6k0k7t6aqe02h1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6tmrfV68DnwrAtNal7-yzD6OMDe8ETeM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153992407078-lr23t0e7761q74p8dq6k0k7t6aqe02h1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
