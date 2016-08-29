@@ -1,72 +1,88 @@
 import React from 'React'
-import { View, Text } from 'react-native'
-import styles from './Styles/LoginScreenStyle'
+import { View, Text, ScrollView } from 'react-native'
+import Styles from './Styles/LoginScreenStyle'
+import { Actions as NavigationActions } from 'react-native-router-flux'
 
-export default class RegisterScreen extends React.Component {
+class RegisterScreen extends React.Component {
+
+  static propTypes = {
+    loginScreen: Proptypes.func
+  }
+
+  constructor(props, context) {
+
+    super(props, context);
+
+    this.state = {
+      email: '',
+      password: '',
+      passwordVerify: ''
+    }
+    this.setEmail = this.setEmail.bind(this);
+    this.setPassword1 = this.setPassword1.bind(this);
+    this.setPassword2 = this.setPassword2.bind(this);
+  }
+
+  setEmail (text){
+    this.setState({ email: text })
+  }
+
+  setPassword (text){
+    this.setState({ password: text })
+  }
+
+  confirmPassword (text){
+    this.setState({ passwordVerify: text })
+  }
+
   render() {
     return (
-      <ScrollView
-        contentContainerStyle={{justifyContent: 'center'}}
-        style={[Styles.container, {height: this.state.visibleHeight}]}>
-
-      <View style={styles.mainContainer}>
-        <Text style={styles.feedback}>
-          Register
-        </Text>
-      </View>
-      
-    </ScrollView>
+      <ScrollView style={styles.mainContainer}>
+        <Text>Register</Text>
+        <View style={styles.container}>
+          <Text style={styles.feedback} />
+          <TextInput
+            onChangeText={this.setEmail}
+            placeholder='Email'
+            style={styles.input}
+          />
+          <TextInput
+            onChangeText={this.setPassword}
+            placeholder='Password'
+            style={styles.input}
+            secureTextEntry
+          />
+          <TextInput
+            onChangeText={this.confirmPassword}
+            placeholder='Confirm Password'
+            style={styles.input}
+            secureTextEntry
+          />
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={this.register}
+          >
+            <Text style={styles.button}>Sign Up</Text>
+          </TouchableOpacity>
+          <View style={styles.links}>
+            <TouchableOpacity
+              onPress={this.props.loginScreen}
+            >
+              <Text style={styles.link}>
+                Log In
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     )
   }
 }
-<ScrollView contentContainerStyle={{justifyContent: 'center'}} style={[Styles.container, {height: this.state.visibleHeight}]}>
-  <Image source={Images.logo} style={[Styles.topLogo, this.state.topLogo]} />
-  <View style={Styles.form}>
-    <View style={Styles.row}>
-      <Text style={Styles.rowLabel}>{I18n.t('username')}</Text>
-      <TextInput
-        ref='username'
-        style={textInputStyle}
-        value={username}
-        editable={editable}
-        keyboardType='default'
-        returnKeyType='next'
-        onChangeText={this.handleChangeUsername}
-        underlineColorAndroid='transparent'
-        onSubmitEditing={() => this.refs.password.focus()}
-        placeholder={I18n.t('username')} />
-    </View>
 
-    <View style={Styles.row}>
-      <Text style={Styles.rowLabel}>{I18n.t('password')}</Text>
-      <TextInput
-        ref='password'
-        style={textInputStyle}
-        value={password}
-        editable={editable}
-        keyboardType='default'
-        returnKeyType='go'
-        secureTextEntry
-        onChangeText={this.handleChangePassword}
-        underlineColorAndroid='transparent'
-        placeholder={I18n.t('password')} />
-    </View>
+mapDispatchToProps(dispatch) => {
+  return {
+    loginScreen: NavigationActions.loginScreen
+  }
+}
 
-    <View style={[Styles.loginRow]}>
-
-      <TouchableOpacity style={Styles.loginButtonWrapper} onPress={this.handlePressLogin}>
-        <View style={Styles.loginButton}>
-          <Text style={Styles.loginText}>{I18n.t('signIn')}</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={Styles.loginButtonWrapper} onPress={this.props.close}>
-        <View style={Styles.loginButton}>
-          <Text style={Styles.loginText}>{I18n.t('cancel')}</Text>
-        </View>
-      </TouchableOpacity>
-
-    </View>
-  </View>
-
-</ScrollView>
+export default connect(null, mapDispatchToProps)(RegisterScreen)
