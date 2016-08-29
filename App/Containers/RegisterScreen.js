@@ -1,12 +1,22 @@
-import React from 'React'
-import { View, Text, ScrollView } from 'react-native'
-import Styles from './Styles/LoginScreenStyle'
+import React, { PropTypes } from 'React'
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  Keyboard,
+  LayoutAnimation,
+  TouchableOpacity
+} from 'react-native'
+import { connect } from 'react-redux'
+import styles from './Styles/LoginScreenStyle'
 import { Actions as NavigationActions } from 'react-native-router-flux'
+import { Metrics } from '../Themes'
 
 class RegisterScreen extends React.Component {
 
   static propTypes = {
-    loginScreen: Proptypes.func
+    loginScreen: PropTypes.func
   }
 
   constructor(props, context) {
@@ -16,11 +26,33 @@ class RegisterScreen extends React.Component {
     this.state = {
       email: '',
       password: '',
-      passwordVerify: ''
+      passwordVerify: '',
+      visibleHeight: Metrics.screenHeight
     }
     this.setEmail = this.setEmail.bind(this);
-    this.setPassword1 = this.setPassword1.bind(this);
-    this.setPassword2 = this.setPassword2.bind(this);
+    this.setPassword = this.setPassword.bind(this);
+    this.confirmPassword = this.confirmPassword.bind(this);
+  }
+
+  componentWillMount () {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
+  }
+
+  componentWillUnmount () {
+    this.keyoardDidShowListener.remove()
+    this.keyboardDidHideListener.remove()
+  }
+
+  keyboardDidShow = (e) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easInEaseOut)
+    let newSize = Metrics.screenHeight - e.endCoordinates.height
+    this.setState({ visibleHeight: newSize })
+  }
+
+  keyboardDidHide = (e) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    this.setState({ visibleHeight: Metrics.screenHeight })
   }
 
   setEmail (text){
@@ -37,49 +69,49 @@ class RegisterScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.mainContainer}>
+      <ScrollView contentContainerStyle={{justifyContent: 'center'}} style={[styles.container, {height: this.state.visibleHeight}]}>
+
         <Text>Register</Text>
-        <View style={styles.container}>
+
+        <View>
           <Text style={styles.feedback} />
+
           <TextInput
             onChangeText={this.setEmail}
             placeholder='Email'
             style={styles.input}
-          />
+            />
           <TextInput
             onChangeText={this.setPassword}
             placeholder='Password'
             style={styles.input}
             secureTextEntry
-          />
+            />
           <TextInput
             onChangeText={this.confirmPassword}
             placeholder='Confirm Password'
             style={styles.input}
             secureTextEntry
-          />
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={this.register}
-          >
+            />
+
+          <TouchableOpacity style={styles.buttonContainer}
+            onPress={this.register} >
             <Text style={styles.button}>Sign Up</Text>
           </TouchableOpacity>
+
           <View style={styles.links}>
-            <TouchableOpacity
-              onPress={this.props.loginScreen}
-            >
-              <Text style={styles.link}>
-                Log In
-              </Text>
+            <TouchableOpacity onPress={this.props.loginScreen}>
+              <Text style={styles.link}> Log In </Text>
             </TouchableOpacity>
           </View>
+
         </View>
       </ScrollView>
     )
   }
 }
 
-mapDispatchToProps(dispatch) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     loginScreen: NavigationActions.loginScreen
   }
