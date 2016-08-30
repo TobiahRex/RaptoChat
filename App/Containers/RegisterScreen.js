@@ -6,7 +6,8 @@ import {
   TextInput,
   Keyboard,
   LayoutAnimation,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { connect } from 'react-redux'
 import styles from './Styles/LoginScreenStyle'
@@ -71,9 +72,10 @@ class RegisterScreen extends React.Component {
       firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(user => {
         console.log('user: ', user);
-        user.updateProfile({ username: this.state.username })
-        .then(freshUser => console.log('updated Profile: ', freshUser))
-        .catch(err => Alert.alert(`Updated profile FAIL: ${err.message}`))
+        console.log('user.displayName: ', user.displayName);
+        // user.updateProfile({ displayName: this.state.username })
+        // .then(freshUser => console.log('display Name: ', freshUser.displayName))
+        // .catch(err => console.error(`Updated profile FAIL: ${err.message}`))
       })
       .catch(err => {
         console.error('firebase Error: ', err);

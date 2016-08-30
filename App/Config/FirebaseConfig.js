@@ -1,6 +1,6 @@
+import Types from '../Actions/Types'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { dispatch } from '../../index.android'
-import Types from '../Actions/Types.js'
 import firebase from 'firebase'
 
 // Initialize Firebase
@@ -29,17 +29,22 @@ const database = firebase.database();
 //   console.error('err: ', err);
 // })
 
+
+
 database.ref().once('value', (snapshot) => {
-  console.log('snapshot: ', snapshot.val());
+  console.log('Database: ', snapshot.val());
 });
 
-
+firebase.auth().signOut()
+.then(() => {
+  console.log('SIGN OUT SUCCESSFULL');
+})
+.catch(err => console.error(err))
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    console.log('USER CHANGED: ', user);
-    console.log('');
-    dispatch({ type: Actions.LOGIN_SUCCESS, user });
+    console.log('USER CHANGED: ', user.email);
+    dispatch({ type: Types.LOGIN_SUCCESS, email: user.email });
     setUserListener();
     setSettingsListener();
   } else {
@@ -52,7 +57,7 @@ function setSettingsListener () {
   database.ref('settings').ref('users').on('value', snapshot => {
     let userSettings = snapshot.val();
     console.log('userSettings: ', userSettings);
-    dispatch({ type: Actions.USER_SETTINGS_RECEIVED, userSettings });
+    dispatch({ type: Types.USER_SETTINGS_RECEIVED, userSettings });
   });
 }
 
@@ -60,7 +65,7 @@ function setUserListener() {
   database.ref('users').on('value', snapshot => {
     let userUpdate = snapshot.val();
     console.log('users: ', userUpdate);
-    dispatch({ type: Actions.USER_UPDATES_RECEIVED, userUpdates });
+    dispatch({ type: Types.USER_UPDATES_RECEIVED, userUpdate });
   });
 }
 

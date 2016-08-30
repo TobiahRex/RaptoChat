@@ -14,8 +14,7 @@ const attempt = (state, action) =>
 
 // successful logins
 const success = (state, action) => {
-  console.log('state: ', state, 'action: ', action);
-  return state.merge({ attempting: false, errorCode: null, username: action.username })
+  return state.merge({ attempting: false, errorCode: null, username: action.email })
 }
 
 // login failure

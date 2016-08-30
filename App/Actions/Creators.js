@@ -8,8 +8,8 @@ const registerSuccess = (x) =>
 
 const attemptLogin = (username, password) =>
 ({ type: Types.LOGIN_ATTEMPT, username, password })
-const loginSuccess = (user) =>
-  ({ type: Types.LOGIN_SUCCESS, user })
+const loginSuccess = (email) =>
+  ({ type: Types.LOGIN_SUCCESS, email })
 const loginFailure = (errorCode) =>
   ({ type: Types.LOGIN_FAILURE, errorCode })
 
