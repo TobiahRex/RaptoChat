@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   Image,
   Keyboard,
-  LayoutAnimation
+  LayoutAnimation,
+  Alert
 } from 'react-native'
 import { connect } from 'react-redux'
 import Styles from './Styles/LoginScreenStyle'
 import Actions from '../Actions/Creators'
 import {Images, Metrics} from '../Themes'
 import { Actions as NavigationActions } from 'react-native-router-flux'
-import { firebase } from '../Config/FirebaseConfig'
-
+import { firebase, database as firebaseDB } from '../Config/FirebaseConfig'
 // I18n
 import I18n from '../I18n/I18n.js'
 
@@ -30,7 +30,7 @@ class LoginScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      email: 'bob@bob.bob',
+      email: 'bob@bob.com',
       password: 'tobiah',
       visibleHeight: Metrics.screenHeight,
       topLogo: { width: Metrics.screenWidth }
@@ -79,17 +79,30 @@ class LoginScreen extends React.Component {
 
   handlePressLogin = () => {
     const { email, password } = this.state
-    // this.isAttempting = true
+    this.isAttempting = true
+
+    // sets store variable 'attempting' to 'true'
+    this.props.attemptLogin()
+
     firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((user) => {
+      /* if sign in was successfull, firebase.auth().oAuthStateChanged will update the store in firebaseConfig.js */
+      this.isAttempting = false
+      // add this active user to the firebase
+      firebaseDB.ref(`active/${user.uid}`).push();
+      // if success -> change view to settings.
+      NavigationActions.settings();
+      // TODO change ^ this transition to "CATEGORIES" on final build.
+
+    })
     .catch(err => {
+      Alert.alert('Sign In Error', err.message);
       console.error('Sign in FAILED: ', err.message);
     });
-    // attempt a login - a saga is listening to pick it up from here.
-    //this.props.attemptLogin(username, password)
   }
 
-  handleChangeUsername = (text) => {
-    this.setState({ username: text })
+  handleChangeEmail = (text) => {
+    this.setState({ email: text })
   }
 
   handleChangePassword = (text) => {
@@ -97,14 +110,12 @@ class LoginScreen extends React.Component {
   }
 
   render () {
-    const { username, password } = this.state
+    const { email, password } = this.state
     const { attempting } = this.props
     const editable = !attempting
     const textInputStyle = editable ? Styles.textInput : Styles.textInputReadonly
     return (
       <ScrollView contentContainerStyle={{justifyContent: 'center'}} style={[Styles.container, {height: this.state.visibleHeight}]}>
-
-        <Image source={Images.logo} style={[Styles.topLogo, this.state.topLogo]} />
 
         <View style={Styles.form}>
           <View style={Styles.row}>
@@ -112,11 +123,11 @@ class LoginScreen extends React.Component {
             <TextInput
               ref='username'
               style={textInputStyle}
-              value={username}
+              value={email}
               editable={editable}
               keyboardType='default'
               returnKeyType='next'
-              onChangeText={this.handleChangeUsername}
+              onChangeText={this.handleChangeEmail}
               underlineColorAndroid='transparent'
               onSubmitEditing={() => this.refs.password.focus()}
               placeholder={I18n.t('username')} />
@@ -166,7 +177,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     close: NavigationActions.pop,
-    attemptLogin: (username, password) => dispatch(Actions.attemptLogin(username, password))
+    attemptLogin () { dispatch(Actions.attemptLogin()) }
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

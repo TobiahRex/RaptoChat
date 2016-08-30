@@ -3,14 +3,11 @@ import Types from '../Actions/Types'
 import Actions from '../Actions/Creators'
 
 // attempts to login
-export function * attemptLogin (username, password) {
-  console.log('username: ', username, 'password: ', password);
+export function * attemptLogin (password) {
   if (password === '') {
-    // dispatch failure
-    yield put(Actions.loginFailure('WRONG'))
+    yield put(Actions.loginFailure('EMPTY PASSWORD FIELD'))
   } else {
-    // dispatch successful logins
-    yield put(Actions.loginSuccess(username))
+    yield put(Actions.attemptLogin())
   }
 }
 
@@ -19,8 +16,8 @@ export function * watchLoginAttempt () {
   // daemonize
   while (true) {
     // wait for LOGIN_ATTEMPT actions to arrive
-    const { username, password } = yield take(Types.LOGIN_ATTEMPT)
+    const { password } = yield take(Types.LOGIN_ATTEMPT)
     // call attemptLogin to perform the actual work
-    yield call(attemptLogin, username, password)
+    yield call(attemptLogin, password)
   }
 }

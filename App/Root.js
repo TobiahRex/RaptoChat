@@ -5,10 +5,9 @@ import Actions from './Actions/Creators'
 import DebugSettings from './Config/DebugSettings'
 import { database } from './Config/FirebaseConfig'
 import NavigationRouter from './Navigation/NavigationRouter'
-// import './Config/PushConfig'
-console.log('database: ', database);
-// Styles
 import styles from './Containers/Styles/RootStyle'
+
+// import './Config/PushConfig'
 
 
 

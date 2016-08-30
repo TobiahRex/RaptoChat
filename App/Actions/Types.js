@@ -2,6 +2,8 @@
 import { createTypes } from 'reduxsauce'
 
 export default createTypes(`
+  AUTH_CHANGE
+
   LOGIN_ATTEMPT
   LOGIN_SUCCESS
   LOGIN_FAILURE
