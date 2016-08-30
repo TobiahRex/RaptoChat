@@ -17,16 +17,24 @@ const attempt = (state) =>
 state.merge({ attempting: true })
 
 // firebase Auth state change.
-const change = (state, action) =>
-  state.merge({ uid: action.uid, username: action.username, email: action.email, photo: action.photo })
+const change = (state, action) => {
+  state.merge({
+    active: action.uid || false,
+    attempting: false,
+    uid: action.uid,
+    username: action.username,
+    email: action.email,
+    photo: action.photo
+  })
+}
 
 // login failure
 const failure = (state, action) =>
-  state.merge({ attempting: false, errorCode: action.errorCode })
+state.merge({ attempting: false, errorCode: action.errorCode })
 
 // logout
 const logout = (state, action) =>
-  state.merge({ username: null })
+state.merge({ username: null })
 
 // map our types to our handlers
 const ACTION_HANDLERS = {
