@@ -8,20 +8,17 @@ export const INITIAL_STATE = Immutable({
   email: null,
   photo: null,
   errorCode: null,
-  attempting: false
+  attempting: false,
+  active: false
 })
 
+// login attempts
+const attempt = (state) =>
+state.merge({ attempting: true })
+
+// firebase Auth state change.
 const change = (state, action) =>
   state.merge({ uid: action.uid, username: action.username, email: action.email, photo: action.photo })
-
-// login attempts
-const attempt = (state, action) =>
-  state.merge({ attempting: true })
-
-// successful logins
-const success = (state, action) => {
-  return state.merge({ attempting: false, errorCode: null, username: action.username })
-}
 
 // login failure
 const failure = (state, action) =>
@@ -35,7 +32,6 @@ const logout = (state, action) =>
 const ACTION_HANDLERS = {
   [Types.AUTH_CHANGE]: change,
   [Types.LOGIN_ATTEMPT]: attempt,
-  [Types.LOGIN_SUCCESS]: success,
   [Types.LOGIN_FAILURE]: failure,
   [Types.LOGOUT]: logout
 }
