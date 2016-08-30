@@ -14,7 +14,8 @@ import Actions from '../Actions/Creators'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { Metrics } from '../Themes'
 import I18n from '../I18n/I18n.js'
-import * as firebase from 'firebase'
+import { firebase } from '../Config/FirebaseConfig'
+console.log('firebase: ', firebase);
 
 class RegisterScreen extends React.Component {
 
@@ -24,16 +25,16 @@ class RegisterScreen extends React.Component {
   }
 
   constructor(props, context) {
-
     super(props, context);
-
     this.state = {
+      username: '',
       email: '',
       password: '',
       passwordVerify: '',
       visibleHeight: Metrics.screenHeight
     }
-    this.isAttempting = false;
+    this.isAttempting = false
+
   }
 
   componentWillMount () {
@@ -57,34 +58,35 @@ class RegisterScreen extends React.Component {
     this.setState({ visibleHeight: Metrics.screenHeight })
   }
 
-  setEmail = (text) => {
-    this.setState({ email: text })
-  }
-
-  setPassword = (text) => {
-    this.setState({ password: text })
-  }
-
-  confirmPassword = (text) => {
-    this.setState({ passwordVerify: text })
-  }
+  setUsername = (text) => this.setState({ username: text })
+  setEmail = (text) => this.setState({ email: text })
+  setPassword = (text) => this.setState({ password: text })
+  confirmPassword = (text) => this.setState({ passwordVerify: text })
 
   handleRegister = () => {
     const { email, password, passwordVerify } = this.state
     this.isAttempting = true;
-
     if (password === passwordVerify) {
-      firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .catch(err => Alert.alert(`Registration Fail: ${err.message}`))
+
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(user => {
+        console.log('user: ', user);
+        user.updateProfile({ username: this.state.username })
+        .then(freshUser => console.log('updated Profile: ', freshUser))
+        .catch(err => Alert.alert(`Updated profile FAIL: ${err.message}`))
+      })
+      .catch(err => {
+        console.error('firebase Error: ', err);
+        Alert.alert(`Registration Fail: ${err.message}`)
+      })
     } else {
       Alert.alert('Error', 'Passwords do not match.');
     }
   }
 
   render() {
-    const { email, password, passwordVerify } = this.state
+    console.log('Registration Component');
+    const { email, password, passwordVerify, username } = this.state
     const { attempting } = this.props
     const editable = !attempting
     const textInputStyle = editable ? styles.textInput : styles.textInputReadOnly
@@ -94,6 +96,25 @@ class RegisterScreen extends React.Component {
         <Text>Register</Text>
 
         <View style={styles.form}>
+          <View style={styles.row}>
+
+            <Text style={styles.rowLabel}>
+              Username
+            </Text>
+
+            <TextInput
+              ref='username'
+              placeholder='BobbaFett'
+              onChangeText={this.setUsername}
+              value={username}
+              editable={editable}
+              keyboardType='default'
+              returnKeyType='next'
+              onSubmitEditing={() => this.refs.email.focus()}
+              style={textInputStyle}
+              />
+          </View>
+
           <View style={styles.row}>
 
             <Text style={styles.rowLabel}>
@@ -143,7 +164,7 @@ class RegisterScreen extends React.Component {
               value={passwordVerify}
               editable={editable}
               keyboardType='default'
-              returnKeyType='next'
+              returnKeyType='go'
               onSubmitEditing={this.confirmPassword}
               secureTextEntry
               style={textInputStyle}
@@ -188,10 +209,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    close: NavigationActions.pop,
-    attemptRegister (email, password) {
-      dispatch(Actions.attemptRegister(email, password))
-    }
+    close: NavigationActions.pop
   }
 }
 

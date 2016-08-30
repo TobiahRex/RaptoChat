@@ -14,6 +14,7 @@ import Styles from './Styles/LoginScreenStyle'
 import Actions from '../Actions/Creators'
 import {Images, Metrics} from '../Themes'
 import { Actions as NavigationActions } from 'react-native-router-flux'
+import { firebase } from '../Config/FirebaseConfig'
 
 // I18n
 import I18n from '../I18n/I18n.js'
@@ -29,8 +30,8 @@ class LoginScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      username: 'trex@tobiahrex.com',
-      password: '',
+      email: 'bob@bob.bob',
+      password: 'tobiah',
       visibleHeight: Metrics.screenHeight,
       topLogo: { width: Metrics.screenWidth }
     }
@@ -77,10 +78,14 @@ class LoginScreen extends React.Component {
   }
 
   handlePressLogin = () => {
-    const { username, password } = this.state
-    this.isAttempting = true
+    const { email, password } = this.state
+    // this.isAttempting = true
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch(err => {
+      console.error('Sign in FAILED: ', err.message);
+    });
     // attempt a login - a saga is listening to pick it up from here.
-    this.props.attemptLogin(username, password)
+    //this.props.attemptLogin(username, password)
   }
 
   handleChangeUsername = (text) => {

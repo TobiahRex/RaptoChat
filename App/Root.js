@@ -3,22 +3,23 @@ import { View, StatusBar } from 'react-native'
 import { Provider } from 'react-redux'
 import Actions from './Actions/Creators'
 import DebugSettings from './Config/DebugSettings'
-import './Config/FirebaseConfig'
+import { database } from './Config/FirebaseConfig'
 import NavigationRouter from './Navigation/NavigationRouter'
 // import './Config/PushConfig'
-
+console.log('database: ', database);
 // Styles
 import styles from './Containers/Styles/RootStyle'
+
+
 
 export default class Root extends React.Component {
   static propTypes = {
     store: PropTypes.object.isRequired
   }
 
-  // componentWillMount () {
-  //   const { dispatch } = this.props.store
-  //   dispatch(Actions.startup())
-  // }
+
+
+
 
   renderApp () {
     console.disableYellowBox = !DebugSettings.yellowBox

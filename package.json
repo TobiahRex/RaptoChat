@@ -28,8 +28,8 @@
     "material-ui": "^0.15.4",
     "querystringify": "0.0.3",
     "ramda": "^0.22.0",
-    "react": "~15.2.1",
-    "react-native": "^0.31.0",
+    "react": "15.3.1",
+    "react-native": "^0.32.0",
     "react-native-animatable": "^0.6.0",
     "react-native-device-info": "^0.9.3",
     "react-native-drawer": "^2.2.6",
@@ -73,22 +73,5 @@
       "./Tests/Setup"
     ],
     "babel": "inherit"
-  },
-  "standard": {
-    "parser": "babel-eslint",
-    "globals": [
-      "describe",
-      "it",
-      "fetch",
-      "navigator",
-      "__DEV__",
-      "XMLHttpRequest",
-      "FormData"
-    ]
-  },
-  "config": {
-    "ghooks": {
-      "pre-commit": "if [ -d 'ignite-base' ]; then cd ignite-base; fi; npm run lint"
-    }
   }
 }
