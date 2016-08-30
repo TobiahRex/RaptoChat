@@ -1,11 +1,15 @@
 import Types from './Types'
 
+const attemptRegister = (email, password) =>
+({ type: Types.REGISTER_ATTEMPT, email, password })
+const registerSuccess = (x) =>
+({ type: Types.REGISTER_SUCCESS, username: x })
+
+
 const attemptLogin = (username, password) =>
 ({ type: Types.LOGIN_ATTEMPT, username, password })
-
 const loginSuccess = (username) =>
   ({ type: Types.LOGIN_SUCCESS, username })
-
 const loginFailure = (errorCode) =>
   ({ type: Types.LOGIN_FAILURE, errorCode })
 
@@ -22,6 +26,7 @@ const startup = () => ({ type: Types.STARTUP })
  */
 export default {
   attemptLogin,
+  attemptRegister,
   loginSuccess,
   loginFailure,
   logout,

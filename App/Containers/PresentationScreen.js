@@ -59,7 +59,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: NavigationActions.login,
     register: NavigationActions.register,
-    settings: Navigationactions.settings,
+    settings: NavigationActions.settings,
   }
 }
 

@@ -1,5 +1,11 @@
 import React, { PropTypes } from 'react'
+import {
+  ScrollView,
+  View,
+  Text
+} from 'react-native'
 import styles from './Styles/SettingsStyle'
+import { connect } from 'react-redux'
 
 class SettingsScreen extends React.Component {
   static propTypes = {
@@ -15,9 +21,13 @@ class SettingsScreen extends React.Component {
   }
   render () {
     return (
-      <View>
+      <ScrollView
+        contentContainerStyle={{justifyContent: 'center'}} style={[styles.container, {height: this.state.visibleHeight}]}>
+
+      <View style={styles.row}>
         <Text style={styles.rowLabel} >Settings Component</Text>
       </View>
+    </ScrollView>
     )
   }
 }
