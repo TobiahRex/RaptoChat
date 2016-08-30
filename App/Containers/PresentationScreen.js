@@ -12,6 +12,8 @@ class PresentationScreen extends React.Component {
 
   static propTypes = {
     login: PropTypes.func,
+    register: PropTypes.func,
+    settings: PropTypes.func,
   }
 
   render () {
@@ -38,6 +40,10 @@ class PresentationScreen extends React.Component {
             Register
           </RoundedButton>
 
+          <RoundedButton onPress={this.props.settings}>
+            Settings
+          </RoundedButton>
+
         </ScrollView>
       </View>
     )
@@ -53,6 +59,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: NavigationActions.login,
     register: NavigationActions.register,
+    settings: Navigationactions.settings,
   }
 }
 

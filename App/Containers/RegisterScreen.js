@@ -14,6 +14,7 @@ import Actions from '../Actions/Creators'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { Metrics } from '../Themes'
 import I18n from '../I18n/I18n.js'
+import * as firebase from 'firebase'
 
 class RegisterScreen extends React.Component {
 
@@ -72,10 +73,13 @@ class RegisterScreen extends React.Component {
     const { email, password, passwordVerify } = this.state
     this.isAttempting = true;
 
-    if (password !== passwordVerify) {
-      console.error('password do not match');
+    if (password === passwordVerify) {
+      firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .catch(err => Alert.alert(`Registration Fail: ${err.message}`))
     } else {
-      this.props.attemptRegister(email, password)
+      Alert.alert('Error', 'Passwords do not match.');
     }
   }
 
@@ -161,10 +165,10 @@ class RegisterScreen extends React.Component {
 
             <TouchableOpacity
               style={styles.loginButtonWrapper}
-              onPress={this.props.loginScreen}>
+              onPress={this.props.close}>
               <View style={styles.loginButton}>
                 <Text style={styles.loginText}>
-                  Login
+                  Cancel
                 </Text>
               </View>
             </TouchableOpacity>
@@ -185,7 +189,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     close: NavigationActions.pop,
-    loginScreen: NavigationActions.loginScreen,
     attemptRegister (email, password) {
       dispatch(Actions.attemptRegister(email, password))
     }
