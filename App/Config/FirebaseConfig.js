@@ -19,39 +19,47 @@ storageBucket: "testfirebase-50970.appspot.com",
 };
 */
 firebase.initializeApp(config)
-const database = firebase.database()
+const firebaseDB = firebase.firebaseDB()
 
 // Perform Firebase Actions below this line.
 
-database.ref().once('value', (snapshot) => {
+firebaseDB.ref().once('value', (snapshot) => {
   console.log('Database: ', snapshot.val())
 })
 
+const activeUser = firebase.auth().currentUser
 firebase.auth().signOut()
 .then(() => {
-  console.log('SIGN OUT SUCCESSFULL')
+  if (activeUser) {
+    firebaseDB.ref('active').once('value', (dbData) => {
+      let newActiveDB = Object.assign({}, dbData)
+      newActiveDB = delete newActiveDB[activeUser.uid]
+      firebaseDB.ref('active').update(newActiveDB)
+    })
+  }
 })
 .catch(err => console.error(err))
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    database.ref('active').child(user.id).set(Date.now())
+    firebaseDB.ref('active').child(user.uid).set(Date.now())
     .then(() => {
       setUserListener()
       setSettingsListener()
-      dispatch({ type: Types.AUTH_CHANGE,
+      dispatch({
+        type: Types.AUTH_CHANGE,
         email: user.email,
-        uid: user.uid })
+        uid: user.uid
+      })
     })
-    .catch((err) => console.error('Could not add user to Active list.'))
-
+    .catch((err) => console.error('Could not add user to Active list.', err.message))
   } else {
     NavigationActions.presentationScreen()
   }
 })
 
 function setSettingsListener () {
-  database.ref('settings').ref('users').on('value', snapshot => {
+  firebaseDB.ref('settings').ref('users').on('value', snapshot => {
     let userSettings = snapshot.val()
     console.log('userSettings: ', userSettings)
     dispatch({ type: Types.USER_SETTINGS_RECEIVED, userSettings })
@@ -59,7 +67,7 @@ function setSettingsListener () {
 }
 
 function setUserListener () {
-  database.ref('users').on('value', snapshot => {
+  firebaseDB.ref('users').on('value', snapshot => {
     let userUpdate = snapshot.val()
     console.log('users: ', userUpdate)
     dispatch({ type: Types.USER_UPDATES_RECEIVED, userUpdate })
@@ -68,5 +76,5 @@ function setUserListener () {
 
 export {
   firebase,
-  database
+  firebaseDB
 }
