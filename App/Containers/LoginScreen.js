@@ -139,7 +139,7 @@ class LoginScreen extends React.Component {
                 <Text style={Styles.loginText}>{I18n.t('signIn')}</Text>
               </View>
             </TouchableOpacity>
-
+            <Text>   </Text>
             <TouchableOpacity style={Styles.loginButtonWrapper} onPress={this.props.close}>
               <View style={Styles.loginButton}>
                 <Text style={Styles.loginText}>{I18n.t('cancel')}</Text>

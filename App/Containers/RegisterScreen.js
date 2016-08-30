@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import styles from './Styles/LoginScreenStyle'
+import Actions from '../Actions/Creators'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { Metrics } from '../Themes'
 import I18n from '../I18n/I18n.js'
@@ -31,9 +32,7 @@ class RegisterScreen extends React.Component {
       passwordVerify: '',
       visibleHeight: Metrics.screenHeight
     }
-    // this.setEmail = this.setEmail.bind(this);
-    // this.setPassword = this.setPassword.bind(this);
-    // this.confirmPassword = this.confirmPassword.bind(this);
+    this.isAttempting = false;
   }
 
   componentWillMount () {
@@ -42,7 +41,7 @@ class RegisterScreen extends React.Component {
   }
 
   componentWillUnmount () {
-    this.keyoardDidShowListener.remove()
+    this.keyboardDidShowListener.remove()
     this.keyboardDidHideListener.remove()
   }
 
@@ -67,6 +66,17 @@ class RegisterScreen extends React.Component {
 
   confirmPassword = (text) => {
     this.setState({ passwordVerify: text })
+  }
+
+  handleRegister = () => {
+    const { email, password, passwordVerify } = this.state
+    this.isAttempting = true;
+
+    if (password !== passwordVerify) {
+      console.error('password do not match');
+    } else {
+      this.props.attemptRegister(email, password)
+    }
   }
 
   render() {
@@ -131,21 +141,34 @@ class RegisterScreen extends React.Component {
               keyboardType='default'
               returnKeyType='next'
               onSubmitEditing={this.confirmPassword}
-              style={styles.input}
-              secureTextEntry />
+              secureTextEntry
+              style={textInputStyle}
+              />
           </View>
 
-          <TouchableOpacity style={styles.buttonContainer}
-            onPress={this.register} >
-            <Text style={styles.button}>Sign Up</Text>
-          </TouchableOpacity>
+          <View style={styles.loginRow}>
 
-          <View style={styles.links}>
-            <TouchableOpacity onPress={this.props.loginScreen}>
-              <Text style={styles.link}> Log In </Text>
+            <TouchableOpacity style={styles.loginButtonWrapper}
+              onPress={this.handleRegister} >
+              <View style={styles.loginButton}>
+                <Text style={styles.loginText}>
+                  Register
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <Text>   </Text>
+
+            <TouchableOpacity
+              style={styles.loginButtonWrapper}
+              onPress={this.props.loginScreen}>
+              <View style={styles.loginButton}>
+                <Text style={styles.loginText}>
+                  Login
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
-
 
         </View>
       </ScrollView>
@@ -161,7 +184,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginScreen: NavigationActions.loginScreen
+    close: NavigationActions.pop,
+    loginScreen: NavigationActions.loginScreen,
+    attemptRegister (email, password) {
+      dispatch(Actions.attemptRegister(email, password))
+    }
   }
 }
 
