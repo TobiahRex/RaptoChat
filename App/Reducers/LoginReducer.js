@@ -11,7 +11,10 @@ export const INITIAL_STATE = Immutable({
 })
 
 // login attempts
-const attempt = (state) =>
+const attemptLogin = (state) =>
+state.merge({ attempting: true })
+
+const attemptRegister = (state) =>
 state.merge({ attempting: true })
 
 // firebase Auth state change.
@@ -38,7 +41,8 @@ const logout = (state, action) => state.merge({
 // map our types to our handlers
 const ACTION_HANDLERS = {
   [Types.AUTH_CHANGE]: change,
-  [Types.LOGIN_ATTEMPT]: attempt,
+  [Types.REGISTER_ATTEMPT]: attemptRegister,
+  [Types.LOGIN_ATTEMPT]: attemptLogin,
   [Types.LOGIN_FAILURE]: failure,
   [Types.LOGOUT]: logout
 }

@@ -3,8 +3,8 @@ import Types from './Types'
 const authChange = (username, email, uid, photo) =>
 ({ type: Types.AUTH_CHANGE, username, email, uid, photo })
 
-const attemptRegister = (email, password) =>
-({ type: Types.REGISTER_ATTEMPT, email, password })
+const attemptRegister = () =>
+({ type: Types.REGISTER_ATTEMPT })
 
 const registerSuccess = (username) =>
 ({ type: Types.REGISTER_SUCCESS, username })

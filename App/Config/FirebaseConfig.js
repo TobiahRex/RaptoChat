@@ -21,19 +21,18 @@ storageBucket: "testfirebase-50970.appspot.com",
 firebase.initializeApp(config)
 const firebaseDB = firebase.database()
 const activeUser = firebase.auth().currentUser
+if (activeUser) {
+  console.warn('User logged in: ', activeUser.uid)
+} else {
+  console.info('NO users logged in.')
+}
 
 // Perform Firebase Actions below this line.
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     setSettingsListener()
     setUserListener()
-  } else if (!activeUser) {
-    firebaseDB.ref('active').once('value', (activeDB) => {
-      let newActiveDB = Object.assign({}, activeDB.val())
-      newActiveDB = delete newActiveDB[activeUser.uid]
-      console.log('newActiveDB: ', newActiveDB)
-      firebaseDB.ref('active').update(newActiveDB)
-    })
+    setActiveUserListener()
   } else {
     NavigationActions.presentationScreen()
   }
@@ -41,17 +40,23 @@ firebase.auth().onAuthStateChanged((user) => {
 
 function setSettingsListener () {
   firebaseDB.ref('settings').ref('users').on('value', snapshot => {
-    let userSettings = snapshot.val()
-    console.log('userSettings: ', userSettings)
+    const userSettings = snapshot.val()
     dispatch({ type: Types.USER_SETTINGS_RECEIVED, userSettings })
   })
 }
 
-function setUserListener () {
-  firebaseDB.ref('users').on('value', snapshot => {
-    let userUpdate = snapshot.val()
-    console.log('users: ', userUpdate)
+function setUserListener (userID) {
+  const id = userID
+  firebaseDB.ref(`users/${id}`).on('value', snapshot => {
+    const userUpdate = snapshot.val()
     dispatch({ type: Types.USER_UPDATES_RECEIVED, userUpdate })
+  })
+}
+
+function setActiveUserListener () {
+  firebaseDB.ref('active').on('value', (activeDB) => {
+    const users = activeDB.val()
+    dispatch({ type: Types.ACTIVE_USERS_RECEIVED, users })
   })
 }
 

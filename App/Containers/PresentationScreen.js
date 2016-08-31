@@ -3,7 +3,9 @@ import { ScrollView, Text, Image, View } from 'react-native'
 import { Images } from '../Themes'
 import { connect } from 'react-redux'
 import RoundedButton from '../Components/RoundedButton'
+import Actions from '../Actions/Creators'
 import { Actions as NavigationActions } from 'react-native-router-flux'
+import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 
 // Styles
 import styles from './Styles/PresentationScreenStyle'
@@ -17,12 +19,20 @@ class PresentationScreen extends React.Component {
   }
 
   logout = () => {
+    const activeUser = firebase.auth().currentUser
     firebase.auth().signOut()
     .then(() => {
       console.log('You\'ve been signed out.')
       this.props.logout()
     })
     .catch((err) => console.error('Could not sign out. ', err))
+
+    firebaseDB.ref('active').once('value', (activeDB) => {
+      let newActiveDB = Object.assign({}, activeDB.val())
+      delete newActiveDB[activeUser.uid]
+      firebaseDB.ref('active').set(newActiveDB)
+      .catch((err) => console.error('Could not remove user from active list.', err))
+    })
   }
 
   render () {

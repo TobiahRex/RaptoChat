@@ -15,8 +15,7 @@ import Styles from './Styles/LoginScreenStyle'
 import Actions from '../Actions/Creators'
 import {Images, Metrics} from '../Themes'
 import { Actions as NavigationActions } from 'react-native-router-flux'
-import { firebase, database as firebaseDB } from '../Config/FirebaseConfig'
-// I18n
+import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 import I18n from '../I18n/I18n.js'
 
 class LoginScreen extends React.Component {
@@ -26,7 +25,6 @@ class LoginScreen extends React.Component {
     close: PropTypes.func,
     attemptLogin: PropTypes.func
   }
-
   constructor (props) {
     super(props)
     this.state = {
@@ -35,17 +33,7 @@ class LoginScreen extends React.Component {
       visibleHeight: Metrics.screenHeight,
       topLogo: { width: Metrics.screenWidth }
     }
-    this.isAttempting = false
   }
-
-  componentWillReceiveProps (newProps) {
-    this.forceUpdate()
-    // Did the login attempt complete?
-    if (this.isAttempting && !newProps.attempting) {
-      this.props.close()
-    }
-  }
-
   componentWillMount () {
     // Using keyboardWillShow/Hide looks 1,000 times better, but doesn't work on Android
     // TODO: Revisit this if Android begins to support - https://github.com/facebook/react-native/issues/3468
@@ -78,18 +66,19 @@ class LoginScreen extends React.Component {
   }
 
   handlePressLogin = () => {
+    console.log('why are you firiing?');
     const { email, password } = this.state
-    this.isAttempting = true
 
     // sets store variable 'attempting' to 'true'
     this.props.attemptLogin()
 
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then((user) => {
+      console.log('LOGIN SUCCESS');
       /* if sign in was successfull, firebase.auth().oAuthStateChanged will update the store in firebaseConfig.js */
-      this.isAttempting = false
       // add this active user to the firebase with the current Date & Time.
-      firebaseDB.ref('active').child(user.uid).set(Date.now());
+      let key = firebaseDB.ref('active').child(user.uid).push(Date.now()).key
+      console.log('Push Key: ', key)
       // if success -> change view to settings.
       NavigationActions.settings();
       // TODO change ^ this transition to "CATEGORIES" on final build.
@@ -112,6 +101,7 @@ class LoginScreen extends React.Component {
   render () {
     const { email, password } = this.state
     const { attempting } = this.props
+    console.log('attempting: ', attempting);
     const editable = !attempting
     const textInputStyle = editable ? Styles.textInput : Styles.textInputReadonly
     return (
@@ -171,7 +161,7 @@ class LoginScreen extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    attempting: state.login.attempting
+    attempting: state.auth.attempting
   }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -15,7 +15,7 @@ import Actions from '../Actions/Creators'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { Metrics } from '../Themes'
 import I18n from '../I18n/I18n.js'
-import { firebase, database as firebaseDB } from '../Config/FirebaseConfig'
+import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 
 class RegisterScreen extends React.Component {
 
@@ -33,7 +33,6 @@ class RegisterScreen extends React.Component {
       passwordVerify: 'tobiah',
       visibleHeight: Metrics.screenHeight
     }
-    this.isAttempting = false
   }
 
   componentWillMount () {
@@ -64,9 +63,8 @@ class RegisterScreen extends React.Component {
 
   handleRegister = () => {
     const { email, password, passwordVerify } = this.state
-    this.isAttempting = true;
     if (password === passwordVerify) {
-
+      this.props.registerAttempt()
       firebase.auth()
       .createUserWithEmailAndPassword(email, password)
       .then((newUser) => newUser.updateProfile({
@@ -87,8 +85,7 @@ class RegisterScreen extends React.Component {
             lastLogin: Date.now()
           })
           firebaseDB.ref('active').child(user.uid).set(Date.now())
-          // .then(() => console.log('user added to active!!!!!'))
-          // .catch(err => console.error(err))
+          .then(() => NavigationActions.settings())          
         })
         .catch((err) => {
           console.error('firebase Error: ', err.message);
@@ -101,10 +98,12 @@ class RegisterScreen extends React.Component {
       Alert.alert('Password Error', 'Passwords do not match.');
     }
   }
+
   render() {
     console.log('Registration Component');
     const { email, password, passwordVerify, username } = this.state
     const { attempting } = this.props
+    console.log('attempting: ', attempting);
     const editable = !attempting
     const textInputStyle = editable ? styles.textInput : styles.textInputReadOnly
     return (
@@ -220,13 +219,14 @@ class RegisterScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    attempting: state.login.attempting
+    attempting: state.auth.attempting
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    close: NavigationActions.pop
+    close: NavigationActions.pop,
+    registerAttempt () { dispatch({ type: Actions.attemptRegister }) }
   }
 }
 
