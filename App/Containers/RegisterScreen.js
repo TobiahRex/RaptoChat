@@ -85,9 +85,10 @@ class RegisterScreen extends React.Component {
             lastLogin: Date.now()
           })
           firebaseDB.ref('active').child(user.uid).set(Date.now())
-          .then(() => NavigationActions.settings())          
+          .then(() => NavigationActions.settings())
         })
         .catch((err) => {
+          this.props.registerFailure()
           console.error('firebase Error: ', err.message);
           Alert.alert(`Register Error`, err.message)
         })
@@ -226,7 +227,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     close: NavigationActions.pop,
-    registerAttempt () { dispatch({ type: Actions.attemptRegister }) }
+    registerAttempt: () => dispatch({ type: Actions.registerAttempt}),
+    registerFailure: () => dispatch({ type: Actions.registerFailure})
   }
 }
 

@@ -23,7 +23,7 @@ class PresentationScreen extends React.Component {
     firebase.auth().signOut()
     .then(() => {
       console.log('You\'ve been signed out.')
-      this.props.logout()
+      this.props.logoutUser()
     })
     .catch((err) => console.error('Could not sign out. ', err))
 
@@ -83,7 +83,8 @@ const mapDispatchToProps = (dispatch) => {
     login: NavigationActions.login,
     register: NavigationActions.register,
     settings: NavigationActions.settings,
-    logout() { dispatch(Actions.logout) }
+    logoutUser: () => dispatch({ type: Actions.logout }),
+    logoutFailure: () => dispatch({ type: Actions.logoutFailure })
   }
 }
 

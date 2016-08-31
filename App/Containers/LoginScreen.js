@@ -23,7 +23,8 @@ class LoginScreen extends React.Component {
     dispatch: PropTypes.func,
     attempting: PropTypes.bool,
     close: PropTypes.func,
-    attemptLogin: PropTypes.func
+    loginAttempt: PropTypes.func,
+    loginFailure: PropTypes.func,
   }
   constructor (props) {
     super(props)
@@ -66,27 +67,28 @@ class LoginScreen extends React.Component {
   }
 
   handlePressLogin = () => {
-    console.log('why are you firiing?');
+    console.log('why are you firiing?')
     const { email, password } = this.state
 
     // sets store variable 'attempting' to 'true'
-    this.props.attemptLogin()
+    this.props.loginAttempt()
 
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then((user) => {
-      console.log('LOGIN SUCCESS');
+      console.log('LOGIN SUCCESS')
       /* if sign in was successfull, firebase.auth().oAuthStateChanged will update the store in firebaseConfig.js */
       // add this active user to the firebase with the current Date & Time.
       let key = firebaseDB.ref('active').child(user.uid).push(Date.now()).key
       console.log('Push Key: ', key)
       // if success -> change view to settings.
-      NavigationActions.settings();
+      NavigationActions.settings()
       // TODO change ^ this transition to "CATEGORIES" on final build.
 
     })
     .catch(err => {
-      Alert.alert('Sign In Error', err.message);
-      console.error('Sign in FAILED: ', err.message);
+      this.props.loginFailure()
+      Alert.alert('Sign In Error', err.message)
+      console.warn('Sign in FAILED: ', err.message)
     });
   }
 
@@ -167,7 +169,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     close: NavigationActions.pop,
-    attemptLogin () { dispatch(Actions.attemptLogin()) }
+    loginAttempt: () => dispatch({ type: Actions.loginAttempt }),
+    loginFailure: () => dispatch({ type: Actions.loginFailure })
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

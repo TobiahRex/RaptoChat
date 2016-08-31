@@ -26,9 +26,9 @@ state.merge({
   active: action.uid ? true : false
 })
 
-// login failure
-const failure = (state, action) =>
-state.merge({ attempting: false, errorCode: action.errorCode })
+// login / register failure
+const failure = (state) =>
+state.merge({ attempting: false })
 
 // logout
 const logout = (state, action) => state.merge({
@@ -42,6 +42,7 @@ const logout = (state, action) => state.merge({
 const ACTION_HANDLERS = {
   [Types.AUTH_CHANGE]: change,
   [Types.REGISTER_ATTEMPT]: attemptRegister,
+  [Types.REGISTER_FAILURE]: failure,
   [Types.LOGIN_ATTEMPT]: attemptLogin,
   [Types.LOGIN_FAILURE]: failure,
   [Types.LOGOUT]: logout
