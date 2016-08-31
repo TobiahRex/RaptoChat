@@ -22,6 +22,8 @@ class RegisterScreen extends React.Component {
   static propTypes = {
     loginScreen: PropTypes.func,
     attempting: PropTypes.bool,
+    registerAttempt: PropTypes.func,
+    registerFailure: PropTypes.func,
   }
 
   constructor(props, context) {
@@ -227,8 +229,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     close: NavigationActions.pop,
-    registerAttempt: () => dispatch({ type: Actions.registerAttempt}),
-    registerFailure: () => dispatch({ type: Actions.registerFailure})
+    registerAttempt: () => dispatch(Actions.registerAttempt()),
+    registerFailure: () => dispatch(Actions.registerFailure())
   }
 }
 

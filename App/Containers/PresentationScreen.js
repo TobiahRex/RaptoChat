@@ -16,22 +16,29 @@ class PresentationScreen extends React.Component {
     login: PropTypes.func,
     register: PropTypes.func,
     settings: PropTypes.func,
+    logoutUser: PropTypes.func,
+    logoutFailure: PropTypes.func
   }
 
   logout = () => {
     const activeUser = firebase.auth().currentUser
     firebase.auth().signOut()
     .then(() => {
-      console.log('You\'ve been signed out.')
+      console.info('You\'ve been signed out.')
+      Alert.alert('Logged Out', 'You\'ve been successfully logged out.')
       this.props.logoutUser()
     })
-    .catch((err) => console.error('Could not sign out. ', err))
+    .catch((err) => {
+      console.error('Could NOT sign out. ', err)
+      Alert.alert('Fail to Log Out', `Could not log you out: ${err.message}`)
+    })
 
     firebaseDB.ref('active').once('value', (activeDB) => {
       let newActiveDB = Object.assign({}, activeDB.val())
       delete newActiveDB[activeUser.uid]
       firebaseDB.ref('active').set(newActiveDB)
-      .catch((err) => console.error('Could not remove user from active list.', err))
+      .catch((err) =>
+      console.error('Could not remove user from active list.', err))
     })
   }
 
@@ -83,8 +90,8 @@ const mapDispatchToProps = (dispatch) => {
     login: NavigationActions.login,
     register: NavigationActions.register,
     settings: NavigationActions.settings,
-    logoutUser: () => dispatch({ type: Actions.logout }),
-    logoutFailure: () => dispatch({ type: Actions.logoutFailure })
+    logoutUser: () => dispatch(Actions.logout()),
+    logoutFailure: () => dispatch(Actions.logoutFailure())
   }
 }
 

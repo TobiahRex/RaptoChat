@@ -15,8 +15,8 @@ const registerFailure = () =>
 const loginAttempt = () =>
 ({ type: Types.LOGIN_ATTEMPT })
 
-const loginSuccess = (email) =>
-({ type: Types.LOGIN_SUCCESS, email })
+const loginSuccess = (user, key) =>
+({ type: Types.LOGIN_SUCCESS, user, key })
 
 const loginFailure = (errorCode) =>
 ({ type: Types.LOGIN_FAILURE, errorCode })
