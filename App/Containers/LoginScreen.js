@@ -88,8 +88,8 @@ class LoginScreen extends React.Component {
     .then((user) => {
       /* if sign in was successfull, firebase.auth().oAuthStateChanged will update the store in firebaseConfig.js */
       this.isAttempting = false
-      // add this active user to the firebase
-      firebaseDB.ref(`active/${user.uid}`).push();
+      // add this active user to the firebase with the current Date & Time.
+      firebaseDB.ref('active').child(user.uid).set(Date.now());
       // if success -> change view to settings.
       NavigationActions.settings();
       // TODO change ^ this transition to "CATEGORIES" on final build.

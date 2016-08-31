@@ -19,40 +19,21 @@ storageBucket: "testfirebase-50970.appspot.com",
 };
 */
 firebase.initializeApp(config)
-const firebaseDB = firebase.firebaseDB()
+const firebaseDB = firebase.database()
+const activeUser = firebase.auth().currentUser
 
 // Perform Firebase Actions below this line.
-
-firebaseDB.ref().once('value', (snapshot) => {
-  console.log('Database: ', snapshot.val())
-})
-
-const activeUser = firebase.auth().currentUser
-firebase.auth().signOut()
-.then(() => {
-  if (activeUser) {
-    firebaseDB.ref('active').once('value', (dbData) => {
-      let newActiveDB = Object.assign({}, dbData)
-      newActiveDB = delete newActiveDB[activeUser.uid]
-      firebaseDB.ref('active').update(newActiveDB)
-    })
-  }
-})
-.catch(err => console.error(err))
-
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    firebaseDB.ref('active').child(user.uid).set(Date.now())
-    .then(() => {
-      setUserListener()
-      setSettingsListener()
-      dispatch({
-        type: Types.AUTH_CHANGE,
-        email: user.email,
-        uid: user.uid
-      })
+    setSettingsListener()
+    setUserListener()
+  } else if (!activeUser) {
+    firebaseDB.ref('active').once('value', (activeDB) => {
+      let newActiveDB = Object.assign({}, activeDB.val())
+      newActiveDB = delete newActiveDB[activeUser.uid]
+      console.log('newActiveDB: ', newActiveDB)
+      firebaseDB.ref('active').update(newActiveDB)
     })
-    .catch((err) => console.error('Could not add user to Active list.', err.message))
   } else {
     NavigationActions.presentationScreen()
   }

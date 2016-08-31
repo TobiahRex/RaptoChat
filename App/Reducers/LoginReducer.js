@@ -28,9 +28,13 @@ const failure = (state, action) =>
 state.merge({ attempting: false, errorCode: action.errorCode })
 
 // logout
-const logout = (state, action) =>
-state.merge({ username: null })
-
+const logout = (state, action) => state.merge({
+  uid: null,
+  email: null,
+  errorCode: null,
+  attempting: false,
+  active: false
+})
 // map our types to our handlers
 const ACTION_HANDLERS = {
   [Types.AUTH_CHANGE]: change,

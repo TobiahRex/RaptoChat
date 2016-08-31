@@ -16,6 +16,15 @@ class PresentationScreen extends React.Component {
     settings: PropTypes.func,
   }
 
+  logout = () => {
+    firebase.auth().signOut()
+    .then(() => {
+      console.log('You\'ve been signed out.')
+      this.props.logout()
+    })
+    .catch((err) => console.error('Could not sign out. ', err))
+  }
+
   render () {
     return (
       <View style={styles.mainContainer}>
@@ -44,6 +53,10 @@ class PresentationScreen extends React.Component {
             Settings
           </RoundedButton>
 
+          <RoundedButton onPress={this.logout}>
+            Logout
+          </RoundedButton>
+
         </ScrollView>
       </View>
     )
@@ -60,6 +73,7 @@ const mapDispatchToProps = (dispatch) => {
     login: NavigationActions.login,
     register: NavigationActions.register,
     settings: NavigationActions.settings,
+    logout() { dispatch(Actions.logout) }
   }
 }
 
