@@ -104,37 +104,6 @@ class LoginScreen extends React.Component {
       console.warn('Sign in FAILED: ', err.message)
     })
   }
-  // handlePressLogin = () => {
-  //   const { email, password } = this.state
-  //   const activeRef = firebaseDB.ref('active');
-  //   // sets store variable 'attempting' to 'true'
-  //   this.props.loginAttempt()
-  //   firebase.auth().signInWithEmailAndPassword(email, password)
-  //   .then((fbUser) => {
-  //     this.props.loginSuccess()
-  //     firebaseDB.ref('users').child(fbUser.uid).once('value', (user) => {
-  //       const key = activeRef.child(fbUser.uid).push({ login: Date.now()}).key
-  //
-  //       activeRef.child(fbUser.uid).child(key).update({ key })
-  //       .then(() => activeRef.once('value', (activeUsers) => {
-  //         firebaseDB.ref('settings').child(fbUser.uid).once('value', (userSettings) => {
-  //           const user = user.val()
-  //           const settings = userSettings.val()
-  //           const users = activeUsers.val()
-  //           console.log('aaa user: ', user, '\nsettings: ', settings, '\nusers: ', users)
-  //           this.props.loginSuccess(user, settings, users)
-  //           // TODO change v this transition to "CATEGORIES" on final build.
-  //           NavigationActions.settings()
-  //         })
-  //       }))
-  //     })
-  //   })
-  //   .catch(err => {
-  //     this.props.loginFailure()
-  //     Alert.alert('Sign In Error', err.message)
-  //     console.warn('Sign in FAILED: ', err.message)
-  //   });
-  // }
   render () {
     const { email, password } = this.state
     const { attempting } = this.props
