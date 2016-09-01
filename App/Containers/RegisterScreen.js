@@ -32,6 +32,7 @@ class RegisterScreen extends React.Component {
     this.state = {
       username: 'Tobiah Rex',
       email: 'bob@bob.com',
+      photoUrl: 'http://iconizer.net/files/Impressions/orig/robot.png',
       password: 'tobiah',
       passwordVerify: 'tobiah',
       visibleHeight: Metrics.screenHeight
@@ -67,11 +68,19 @@ class RegisterScreen extends React.Component {
       firebaseAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
         this.props.registerSuccess(newUser)
-        newUser.updateProfile({ displayName: this.state.username })
+        newUser.updateProfile({
+          displayName: this.state.username,
+          registered: Date.now(),
+          lastLogin: Date.now(),
+          photoUrl: this.state.photoUrl
+        })
       })
       .then(() => {
         let user = firebaseAuth.currentUser
-        firebaseDB.ref('active').child(user.uid).set(Date.now())
+        firebaseDB.ref(`active/${user.uid}`).set({
+          login: Date.now(),
+          user: user.uid
+        })
         firebaseDB.ref(`settings/${user.uid}`).set({
           searchDistance: 10,
           distance: 'Mi.',
@@ -82,7 +91,7 @@ class RegisterScreen extends React.Component {
           username: user.displayName,
           email: user.email,
           id: user.uid,
-          photoUrl: user.photoUrl || 'http://iconizer.net/files/Impressions/orig/robot.png',
+          photoUrl: this.state.photoUrl,
           lastLogin: Date.now()
         })
       })
@@ -233,7 +242,7 @@ const mapDispatchToProps = (dispatch) => {
     registerAttempt: () => dispatch(Actions.registerAttempt()),
     registerSuccess: (newUser) => dispatch(Actions.registerSuccess(newUser)),
     registerFailure: () => dispatch(Actions.registerFailure()),
-    receivedUser: (user, settings) => dispatch(Actions.recievedUser(user, settings)),
+    receivedUser: (user, settings) => dispatch(Actions.receivedUser(user, settings)),
     receivedActiveUsers: (users) => dispatch(Actions.receivedActiveUsers(users))
   }
 }

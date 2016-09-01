@@ -23,7 +23,10 @@ firebase.initializeApp(config)
 const firebaseDB = firebase.database()
 
 // get the current list of fb active users immediately on start up.
-firebaseDB.ref('active').once('value', (snapshot) => dispatch(Actions.receivedActiveUsers(snapshot.val())))
+firebaseDB.ref('active').once('value', (snapshot) => {
+  const users = snapshot.val()
+  dispatch(Actions.receivedActiveUsers(users))
+})
 
 // TODO: Delete this active user check before deployment.
 const activeUser = firebase.auth().currentUser

@@ -3,9 +3,6 @@ import Immutable from 'seamless-immutable'
 import { createReducer } from 'reduxsauce'
 
 export const INITIAL_STATE = Immutable({
-  uid: null,
-  email: null,
-  photoUrl: null,
   active: false,
   attempting: false,
   errorCode: null
@@ -13,8 +10,6 @@ export const INITIAL_STATE = Immutable({
 // firebase Auth state change.
 const change = (state, action) =>
 state.merge({
-  uid: action.uid,
-  email: action.email,
   attempting: false,
   active: action.uid ? true : false
 })
@@ -24,9 +19,6 @@ state.merge({ attempting: true })
 
 const registerSuccess = (state, action) =>
 state.merge({
-  uid: action.newUser.uid,
-  email: action.newUser.email,
-  photoUrl: action.newUser.photoUrl,
   active: true,
   attempting: false
 })

@@ -3,14 +3,14 @@ import Immutable from 'seamless-immutable'
 import { createReducer } from 'reduxsauce'
 
 export const INITIAL_STATE = Immutable({
-  activeUsers: null
+  users: null
 })
 
 const received = (state, action) =>
-state.merge({ activeUsers: action.users })
+state.merge({ users: action.users })
 
 const update = (state, action) =>
-state.merge({ activeUsers: action.users })
+state.merge({ users: action.users })
 
 const ACTION_HANDLERS = {
   [Types.ACTIVE_USERS_RECEIVED]: received,
