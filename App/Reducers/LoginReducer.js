@@ -48,6 +48,7 @@ const logoutSuccess = (state, action) => state.merge({
 // map our types to our handlers
 const ACTION_HANDLERS = {
   [Types.AUTH_CHANGE]: change,
+  // TODO: Move Register Actions into their own Reducer.export default createReducer(INITIAL_STATE, ACTION_HANDLERS)
   [Types.REGISTER_ATTEMPT]: registerAttempt,
   [Types.REGISTER_SUCCESS]: registerSuccess,
   [Types.REGISTER_FAILURE]: failure,
@@ -56,4 +57,5 @@ const ACTION_HANDLERS = {
   [Types.LOGIN_FAILURE]: failure,
   [Types.LOGOUT_SUCCESS]: logoutSuccess
 }
+
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS)
