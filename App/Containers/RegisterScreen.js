@@ -24,6 +24,8 @@ class RegisterScreen extends React.Component {
     registerAttempt: PropTypes.func,
     registerSuccess: PropTypes.func,
     registerFailure: PropTypes.func,
+    receivedUser: PropTypes.func,
+    receivedActiveUsers: PropTypes.func
   }
   constructor(props, context) {
     super(props, context);
@@ -59,15 +61,16 @@ class RegisterScreen extends React.Component {
 
   handleRegister = () => {
     const { email, password, passwordVerify } = this.state
-    const user = firebaseAuth.currentUser
+
     if (password === passwordVerify) {
       this.props.registerAttempt()
       firebaseAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
-        this.props.registerSuccess()
+        this.props.registerSuccess(newUser)
         newUser.updateProfile({ displayName: this.state.username })
       })
       .then(() => {
+        let user = firebaseAuth.currentUser
         firebaseDB.ref('active').child(user.uid).set(Date.now())
         firebaseDB.ref(`settings/${user.uid}`).set({
           searchDistance: 10,
@@ -84,15 +87,15 @@ class RegisterScreen extends React.Component {
         })
       })
       .then(() => {
-        firebaseDB.ref(`settings/${user.uid}`).once('value')
-      })
-      .then((userSettings) => {
-        firebaseDB.ref('active').once('value', (activeSnap) => {
-          let settings = userSettings.val()
-          let users = activeSnap.val()
-          this.props.receivedActiveUsers(users)
-          this.props.receivedUser(user, settings)
-          NavigationActions.settings()
+        let user = firebaseAuth.currentUser
+        firebaseDB.ref(`settings/${user.uid}`).once('value', (settingsSnap) => {
+          firebaseDB.ref('active').once('value', (activeSnap) => {
+            let settings = settingsSnap.val()
+            let users = activeSnap.val()
+            this.props.receivedActiveUsers(users)
+            this.props.receivedUser(user, settings)
+            NavigationActions.settings()
+          })
         })
       })
       .catch((err) => {
@@ -104,45 +107,6 @@ class RegisterScreen extends React.Component {
       Alert.alert('Password Error', 'Passwords do not match.');
     }
   }
-  // handleRegister = () => {
-  //   const { email, password, passwordVerify } = this.state
-  //   if (password === passwordVerify) {
-  //     this.props.registerAttempt()
-  //     firebase.auth()
-  //     .createUserWithEmailAndPassword(email, password)
-  //     .then((newUser) => newUser.updateProfile({
-  //       displayName: this.state.username })
-  //       .then(() => {
-  //         firebaseDB.ref('active').child(user.uid).set(Date.now())
-  //         .then(() => NavigationActions.settings())
-  //
-  //         let user = firebase.auth().currentUser;
-  //         firebaseDB.ref(`settings/${user.uid}`).set({
-  //           searchDistance: 10,
-  //           distance: 'Mi.',
-  //           favorites: 'empty',
-  //           voice: 'empty',
-  //         })
-  //         firebaseDB.ref(`users/${user.uid}`).set({
-  //           username: user.displayName,
-  //           email: user.email,
-  //           id: user.uid,
-  //           photoUrl: user.photoUrl || 'http://iconizer.net/files/Impressions/orig/robot.png',
-  //           lastLogin: Date.now()
-  //         })
-  //       })
-  //       .catch((err) => {
-  //         this.props.registerFailure()
-  //         console.error('firebase Error: ', err.message);
-  //         Alert.alert(`Register Error`, err.message)
-  //       })
-  //     )
-  //     .catch((err) => console.error('Could not register new user.', err))
-  //
-  //   } else {
-  //     Alert.alert('Password Error', 'Passwords do not match.');
-  //   }
-  // }
   render() {
     const { email, password, passwordVerify, username } = this.state
     const { attempting } = this.props
@@ -267,10 +231,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     close: NavigationActions.pop,
     registerAttempt: () => dispatch(Actions.registerAttempt()),
-    registerSuccess: () => dispatch(Actions.registerSuccess()),
+    registerSuccess: (newUser) => dispatch(Actions.registerSuccess(newUser)),
     registerFailure: () => dispatch(Actions.registerFailure()),
     receivedUser: (user, settings) => dispatch(Actions.recievedUser(user, settings)),
-    recievedActiveUsers: (users) => dispatch(Actions.receivedActiveUsers(users))
+    receivedActiveUsers: (users) => dispatch(Actions.receivedActiveUsers(users))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen)

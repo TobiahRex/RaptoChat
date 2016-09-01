@@ -5,9 +5,10 @@ import { createReducer } from 'reduxsauce'
 export const INITIAL_STATE = Immutable({
   uid: null,
   email: null,
-  errorCode: null,
+  photoUrl: null,
+  active: false,
   attempting: false,
-  active: false
+  errorCode: null
 })
 // firebase Auth state change.
 const change = (state, action) =>
@@ -21,8 +22,14 @@ state.merge({
 const registerAttempt = (state) =>
 state.merge({ attempting: true })
 
-const registerSuccess = (state) =>
-state.merge({ attempting: false })
+const registerSuccess = (state, action) =>
+state.merge({
+  uid: action.newUser.uid,
+  email: action.newUser.email,
+  photoUrl: action.newUser.photoUrl,
+  active: true,
+  attempting: false
+})
 
 // login attempts
 const loginAttempt = (state) =>
