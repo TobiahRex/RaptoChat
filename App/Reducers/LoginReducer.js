@@ -27,6 +27,9 @@ state.merge({
 const loginAttempt = (state) =>
 state.merge({ attempting: true })
 
+const loginSuccess = (state) =>
+state.merge({ attempting: true })
+
 // login / register failure
 const failure = (state) =>
 state.merge({ attempting: false })
@@ -45,6 +48,7 @@ const ACTION_HANDLERS = {
   [Types.REGISTER_ATTEMPT]: registerAttempt,
   [Types.REGISTER_SUCCESS]: registerSuccess,
   [Types.LOGIN_ATTEMPT]: loginAttempt,
+  [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.REGISTER_FAILURE]: failure,
   [Types.LOGIN_FAILURE]: failure,
   [Types.LOGOUT]: logout

@@ -73,30 +73,32 @@ class LoginScreen extends React.Component {
   }
   handlePressLogin = () => {
     const { email, password } = this.state
-    const activeRef = firebaseDB.ref('active');
-    // sets store variable 'attempting' to 'true'
     this.props.loginAttempt()
+    
     firebaseAuth.signInWithEmailAndPassword(email, password)
-    .then((fbUser) => {
+    .then((user) => {
       this.props.loginSuccess()
-      firebaseDB.ref('users').child(fbUser.uid).once('value', (user) => {
-        const key = activeRef.child(fbUser.uid).push({ login: Date.now()}).key
-
-        activeRef.child(fbUser.uid).child(key).update({ key })
-        .then(() => activeRef.once('value', (activeUsers) => {
-          firebaseDB.ref('settings').child(fbUser.uid).once('value', (userSettings) => {
-            const user = user.val()
-            const settings = userSettings.val()
-            const users = activeUsers.val()
-            console.log('aaa user: ', user, '\nsettings: ', settings, '\nusers: ', users)
-            this.props.loginSuccess(user, settings, users)
-            // TODO change v this transition to "CATEGORIES" on final build.
-            NavigationActions.settings()
-          })
-        }))
+      firebaseDB.ref(`active/${user.uid}`).set({
+        login: Date.now(),
+        user: user.uid
       })
     })
-    .catch(err => {
+    .then(() => {
+      let user = firebaseAuth.currentUser
+      firebaseDB.ref(`settings/${user.uid}`).once('value', (settingsSnap) => {
+        firebaseDB.ref(`users/${user.uid}`).once('value', (profileSnap) => {
+          firebaseDB.ref('active').once('value', (activeSnap) => {
+            user = profileSnap.val()
+            let settings = settingsSnap.val()
+            let users = activeSnap.val()
+            this.props.receivedUser(user, settings)
+            this.props.receivedActiveUsers(users)
+            NavigationActions.settings()
+          })
+        })
+      })
+    })
+    .catch((err) => {
       this.props.loginFailure()
       Alert.alert('Sign In Error', err.message)
       console.warn('Sign in FAILED: ', err.message)

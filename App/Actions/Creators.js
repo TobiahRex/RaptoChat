@@ -21,6 +21,9 @@ const registerFailure = () =>
 const loginAttempt = () =>
 ({ type: Types.LOGIN_ATTEMPT })
 
+const loginSuccess = () =>
+({ type: Types.LOGIN_SUCCESS })
+
 const loginFailure = (errorCode) =>
 ({ type: Types.LOGIN_FAILURE, errorCode })
 
@@ -46,6 +49,7 @@ export default {
 
   loginAttempt,
   loginFailure,
+  loginSuccess,
 
   logout,
   logoutFailure,
