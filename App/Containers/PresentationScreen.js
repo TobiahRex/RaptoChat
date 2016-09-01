@@ -1,5 +1,11 @@
 import React, {PropTypes} from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
+import {
+  ScrollView,
+  Text,
+  Image,
+  View,
+  Alert
+} from 'react-native'
 import { Images } from '../Themes'
 import { connect } from 'react-redux'
 import RoundedButton from '../Components/RoundedButton'
@@ -13,7 +19,7 @@ import styles from './Styles/PresentationScreenStyle'
 class PresentationScreen extends React.Component {
 
   static propTypes = {
-    login: PropTypes.func,
+    loginScreen: PropTypes.func,
     register: PropTypes.func,
     settings: PropTypes.func,
     logoutUser: PropTypes.func,
@@ -58,7 +64,7 @@ class PresentationScreen extends React.Component {
             </Text>
           </View>*/}
 
-          <RoundedButton onPress={this.props.login}>
+          <RoundedButton onPress={this.props.loginScreen}>
             Login
           </RoundedButton>
 
@@ -87,7 +93,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: NavigationActions.login,
+    loginScreen: NavigationActions.login,
     register: NavigationActions.register,
     settings: NavigationActions.settings,
     logoutUser: () => dispatch(Actions.logout()),

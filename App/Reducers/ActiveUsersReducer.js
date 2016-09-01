@@ -9,8 +9,11 @@ export const INITIAL_STATE = Immutable({
 const received = (state, action) =>
 state.merge({ activeUsers: action.users })
 
+const update = (state, action) =>
+state.merge({ activeUsers: action.users })
+
 const ACTION_HANDLERS = {
-  [Types.ACTIVE_USERS_RECEIVED]: received
+  [Types.ACTIVE_USERS_RECEIVED]: received,
 }
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS)

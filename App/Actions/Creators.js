@@ -1,5 +1,11 @@
 import Types from './Types'
 
+const receivedUser = (user, settings) =>
+({ type: Types.USER_RECEIVED, user, settings })
+
+const receivedActiveUsers = (users) =>
+({ type: Types.ACTIVE_USERS_RECEIVED, users })
+
 const authChange = (username, email, uid, photo) =>
 ({ type: Types.AUTH_CHANGE, username, email, uid, photo })
 
@@ -14,9 +20,6 @@ const registerFailure = () =>
 
 const loginAttempt = () =>
 ({ type: Types.LOGIN_ATTEMPT })
-
-const loginSuccess = (user, key) =>
-({ type: Types.LOGIN_SUCCESS, user, key })
 
 const loginFailure = (errorCode) =>
 ({ type: Types.LOGIN_FAILURE, errorCode })
@@ -33,6 +36,8 @@ Makes available all the action creators we've created.
 */
 
 export default {
+  receivedUser,
+  receivedActiveUsers,
   authChange,
 
   registerAttempt,
@@ -40,7 +45,6 @@ export default {
   registerFailure,
 
   loginAttempt,
-  loginSuccess,
   loginFailure,
 
   logout,
