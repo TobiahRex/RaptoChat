@@ -11,11 +11,11 @@ class DrawerContent extends Component {
     this.context.drawer.toggle()
   }
 
-  // handlePressComponents = () => {
-  //   this.toggleDrawer()
-  //   NavigationActions.componentExamples()
-  // }
-  //
+  handlePressComponents = () => {
+    this.toggleDrawer()
+    NavigationActions.componentExamples()
+  }
+
   // handlePressUsage = () => {
   //   this.toggleDrawer()
   //   NavigationActions.usageExamples()
@@ -41,10 +41,7 @@ class DrawerContent extends Component {
       <ScrollView style={styles.container}>
         <Image source={Images.logo} style={styles.logo} />
         <DrawerButton text='Component Examples' onPress={this.handlePressComponents} />
-        <DrawerButton text='Usage Examples' onPress={this.handlePressUsage} />
-        // <DrawerButton text='API Testing' onPress={this.handlePressAPI} />
-        // <DrawerButton text='Themes' onPress={this.handlePressTheme} />
-        // <DrawerButton text='Device Info' onPress={this.handlePressDevice} />
+
       </ScrollView>
     )
   }
