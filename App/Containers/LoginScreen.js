@@ -17,15 +17,17 @@ import {Images, Metrics} from '../Themes'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 import I18n from '../I18n/I18n.js'
-
+const firebaseAuth = firebase.auth()
 class LoginScreen extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func,
     attempting: PropTypes.bool,
     close: PropTypes.func,
     loginAttempt: PropTypes.func,
+    loginSuccess: PropTypes.func,
     loginFailure: PropTypes.func,
-    loginSuccess: PropTypes.func
+    recievedUser: PropTypes.func,
+    receivedActiveUsers: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -74,12 +76,12 @@ class LoginScreen extends React.Component {
     const activeRef = firebaseDB.ref('active');
     // sets store variable 'attempting' to 'true'
     this.props.loginAttempt()
-
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    firebaseAuth.signInWithEmailAndPassword(email, password)
     .then((fbUser) => {
-      console.info('LOGIN SUCCESS')
+      this.props.loginSuccess()
       firebaseDB.ref('users').child(fbUser.uid).once('value', (user) => {
         const key = activeRef.child(fbUser.uid).push({ login: Date.now()}).key
+
         activeRef.child(fbUser.uid).child(key).update({ key })
         .then(() => activeRef.once('value', (activeUsers) => {
           firebaseDB.ref('settings').child(fbUser.uid).once('value', (userSettings) => {
@@ -98,8 +100,39 @@ class LoginScreen extends React.Component {
       this.props.loginFailure()
       Alert.alert('Sign In Error', err.message)
       console.warn('Sign in FAILED: ', err.message)
-    });
+    })
   }
+  // handlePressLogin = () => {
+  //   const { email, password } = this.state
+  //   const activeRef = firebaseDB.ref('active');
+  //   // sets store variable 'attempting' to 'true'
+  //   this.props.loginAttempt()
+  //   firebase.auth().signInWithEmailAndPassword(email, password)
+  //   .then((fbUser) => {
+  //     this.props.loginSuccess()
+  //     firebaseDB.ref('users').child(fbUser.uid).once('value', (user) => {
+  //       const key = activeRef.child(fbUser.uid).push({ login: Date.now()}).key
+  //
+  //       activeRef.child(fbUser.uid).child(key).update({ key })
+  //       .then(() => activeRef.once('value', (activeUsers) => {
+  //         firebaseDB.ref('settings').child(fbUser.uid).once('value', (userSettings) => {
+  //           const user = user.val()
+  //           const settings = userSettings.val()
+  //           const users = activeUsers.val()
+  //           console.log('aaa user: ', user, '\nsettings: ', settings, '\nusers: ', users)
+  //           this.props.loginSuccess(user, settings, users)
+  //           // TODO change v this transition to "CATEGORIES" on final build.
+  //           NavigationActions.settings()
+  //         })
+  //       }))
+  //     })
+  //   })
+  //   .catch(err => {
+  //     this.props.loginFailure()
+  //     Alert.alert('Sign In Error', err.message)
+  //     console.warn('Sign in FAILED: ', err.message)
+  //   });
+  // }
   render () {
     const { email, password } = this.state
     const { attempting } = this.props
@@ -168,12 +201,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     close: NavigationActions.pop,
     loginAttempt: () => dispatch(Actions.loginAttempt()),
-    loginSuccess: (user, settings, users) => {
-      console.log('bbbb USER: ', user);
-      dispatch(Actions.receivedUser(user, settings))
-      dispatch(Actions.receivedActiveUsers(users))
-    },
-    loginFailure: () => dispatch(Actions.loginFailure())
+    loginSuccess: () => dispatch(Action.loginSuccess()),
+    loginFailure: () => dispatch(Actions.loginFailure()),
+    recievedUser: (user, settings) => dispatch(Actions.receivedUser(user, settings)),
+    receivedActiveUsers: (users) => dispatch(Actions.receivedActiveUsers(users))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

@@ -17,7 +17,6 @@ import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 import styles from './Styles/PresentationScreenStyle'
 
 class PresentationScreen extends React.Component {
-
   static propTypes = {
     loginScreen: PropTypes.func,
     register: PropTypes.func,
@@ -25,7 +24,6 @@ class PresentationScreen extends React.Component {
     logoutUser: PropTypes.func,
     logoutFailure: PropTypes.func
   }
-
   logout = () => {
     const activeUser = firebase.auth().currentUser
     firebase.auth().signOut()
