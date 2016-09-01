@@ -26,7 +26,7 @@ class LoginScreen extends React.Component {
     loginAttempt: PropTypes.func,
     loginSuccess: PropTypes.func,
     loginFailure: PropTypes.func,
-    recievedUser: PropTypes.func,
+    receivedUser: PropTypes.func,
     receivedActiveUsers: PropTypes.func
   }
   constructor (props) {
@@ -74,7 +74,7 @@ class LoginScreen extends React.Component {
   handlePressLogin = () => {
     const { email, password } = this.state
     this.props.loginAttempt()
-    
+
     firebaseAuth.signInWithEmailAndPassword(email, password)
     .then((user) => {
       this.props.loginSuccess()
@@ -205,7 +205,7 @@ const mapDispatchToProps = (dispatch) => {
     loginAttempt: () => dispatch(Actions.loginAttempt()),
     loginSuccess: () => dispatch(Action.loginSuccess()),
     loginFailure: () => dispatch(Actions.loginFailure()),
-    recievedUser: (user, settings) => dispatch(Actions.receivedUser(user, settings)),
+    receivedUser: (user, settings) => dispatch(Actions.receivedUser(user, settings)),
     receivedActiveUsers: (users) => dispatch(Actions.receivedActiveUsers(users))
   }
 }

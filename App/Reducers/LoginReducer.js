@@ -28,7 +28,7 @@ const loginAttempt = (state) =>
 state.merge({ attempting: true })
 
 const loginSuccess = (state) =>
-state.merge({ attempting: true })
+state.merge({ attempting: false })
 
 // login / register failure
 const failure = (state) =>
