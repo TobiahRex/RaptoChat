@@ -1,17 +1,19 @@
 import { combineReducers } from 'redux'
 import auth from './LoginReducer'
 import user from './UserReducer'
-import active from './ActiveUsersReducer'
+import activeUsers from './ActiveUsersReducer'
+import activeCategory from './CategoryReducer'
 // import WeatherReducer from './WeatherReducer'
 
 // glue all the reducers together into 1 root reducer
 export default combineReducers({
   auth,
   user,
-  active
+  activeUsers,
+  activeCategory
 })
 
 // Put reducer keys that you do NOT want stored to persistence here
-export const persistentStoreBlacklist = ['auth', 'user', 'active']
+export const persistentStoreBlacklist = ['auth', 'user', 'activeUsers', 'activeCategory']
 // OR put reducer keys that you DO want stored to persistence here (overrides blacklist)
 // export const persistentStoreWhitelist = []

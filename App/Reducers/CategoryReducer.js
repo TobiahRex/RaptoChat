@@ -3,19 +3,17 @@ import Immutable from 'seamless-immutable'
 import { createReducer } from 'reduxsauce'
 
 export const INITIAL_STATE = Immutable({
-  category_messages:
-  category_users:
+  category_messages: null,
+  category_users: null,
 })
 
-const receivedMessages = (state, action) => {
-
-  state({
-    category_messages: action.messages
-  })
-}
+const receivedMessages = (state, action) =>
+state.merge({
+  category_messages: action.messages
+})
 
 const receivedUsers = (state, action) =>
-state({
+state.merge({
   category_users: action.users
 })
 
