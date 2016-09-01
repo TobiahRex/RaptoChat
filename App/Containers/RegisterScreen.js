@@ -67,13 +67,8 @@ class RegisterScreen extends React.Component {
       this.props.registerAttempt()
       firebaseAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
-        this.props.registerSuccess(newUser)
-        newUser.updateProfile({
-          displayName: this.state.username,
-          registered: Date.now(),
-          lastLogin: Date.now(),
-          photoUrl: this.state.photoUrl
-        })
+        this.props.registerSuccess()
+        newUser.updateProfile({ displayName: this.state.username })
       })
       .then(() => {
         let user = firebaseAuth.currentUser
@@ -88,7 +83,7 @@ class RegisterScreen extends React.Component {
           voice: 'empty',
         })
         firebaseDB.ref(`users/${user.uid}`).set({
-          username: user.displayName,
+          username: this.state.username,
           email: user.email,
           id: user.uid,
           photoUrl: this.state.photoUrl,
@@ -98,12 +93,15 @@ class RegisterScreen extends React.Component {
       .then(() => {
         let user = firebaseAuth.currentUser
         firebaseDB.ref(`settings/${user.uid}`).once('value', (settingsSnap) => {
-          firebaseDB.ref('active').once('value', (activeSnap) => {
-            let settings = settingsSnap.val()
-            let users = activeSnap.val()
-            this.props.receivedActiveUsers(users)
-            this.props.receivedUser(user, settings)
-            NavigationActions.settings()
+          firebaseDB.ref(`users/${user.uid}`).once('value', (profileSnap) => {
+            firebaseDB.ref('active').once('value', (activeSnap) => {
+              user = profileSnap.val()
+              let settings = settingsSnap.val()
+              let users = activeSnap.val()
+              this.props.receivedUser(user, settings)
+              this.props.receivedActiveUsers(users)
+              NavigationActions.settings()
+            })
           })
         })
       })

@@ -13,8 +13,8 @@ export const INITIAL_STATE = Immutable({
 
 const received = (state, action) =>
 state.merge({
-  uid: action.user.uid,
-  username: action.user.displayName,
+  uid: action.user.id,
+  username: action.user.username,
   email: action.user.email,
   lastLogin: action.user.lastLogin,
   registered: action.user.registered,

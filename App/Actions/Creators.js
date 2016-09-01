@@ -12,8 +12,8 @@ const authChange = (username, email, uid, photo) =>
 const registerAttempt = () =>
 ({ type: Types.REGISTER_ATTEMPT })
 
-const registerSuccess = (newUser) =>
-({ type: Types.REGISTER_SUCCESS, newUser })
+const registerSuccess = () =>
+({ type: Types.REGISTER_SUCCESS })
 
 const registerFailure = () =>
 ({ type: Types.REGISTER_FAILURE })
