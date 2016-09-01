@@ -63,9 +63,10 @@ function setUserListener (userID) {
 }
 // mainly listens for other users logging in and notifies the store when triggered.
 function setActiveUserListener () {
-  firebaseDB.ref('active').on('value', (snapshot) => {
-    const users = snapshot.val()
-    dispatch(Actions.recievedActiveUsers(users))
+  console.warn('ACTIVE USER @ FirebaseConfig')
+  firebaseDB.ref('active').on('value', (activeSnap) => {
+    const users = activeSnap.val()
+    dispatch({ type: Types.ACTIVE_USERS_RECEIVED, users })
   })
 }
 

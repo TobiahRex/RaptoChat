@@ -22,8 +22,19 @@ state.merge({
   settings: action.settings
 })
 
+const logout = (state) =>
+state.merge({
+  uid: null,
+  username: null,
+  email: null,
+  lastLogin: null,
+  photoUrl: null,
+  settings: null
+})
+
 const ACTION_HANDLERS = {
-  [Types.USER_RECEIVED]: received
+  [Types.USER_RECEIVED]: received,
+  [Types.LOGOUT_SUCCESS]: logout
 }
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS)

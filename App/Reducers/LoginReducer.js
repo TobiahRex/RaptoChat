@@ -28,14 +28,17 @@ const loginAttempt = (state) =>
 state.merge({ attempting: true })
 
 const loginSuccess = (state) =>
-state.merge({ attempting: false })
+state.merge({
+  active: false,
+  attempting: false
+})
 
 // login / register failure
 const failure = (state) =>
 state.merge({ attempting: false })
 
 // logout
-const logout = (state, action) => state.merge({
+const logoutSuccess = (state, action) => state.merge({
   uid: null,
   email: null,
   errorCode: null,
@@ -47,10 +50,10 @@ const ACTION_HANDLERS = {
   [Types.AUTH_CHANGE]: change,
   [Types.REGISTER_ATTEMPT]: registerAttempt,
   [Types.REGISTER_SUCCESS]: registerSuccess,
+  [Types.REGISTER_FAILURE]: failure,
   [Types.LOGIN_ATTEMPT]: loginAttempt,
   [Types.LOGIN_SUCCESS]: loginSuccess,
-  [Types.REGISTER_FAILURE]: failure,
   [Types.LOGIN_FAILURE]: failure,
-  [Types.LOGOUT]: logout
+  [Types.LOGOUT_SUCCESS]: logoutSuccess
 }
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS)

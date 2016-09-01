@@ -203,7 +203,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     close: NavigationActions.pop,
     loginAttempt: () => dispatch(Actions.loginAttempt()),
-    loginSuccess: () => dispatch(Action.loginSuccess()),
+    loginSuccess: () => dispatch(Actions.loginSuccess()),
     loginFailure: () => dispatch(Actions.loginFailure()),
     receivedUser: (user, settings) => dispatch(Actions.receivedUser(user, settings)),
     receivedActiveUsers: (users) => dispatch(Actions.receivedActiveUsers(users))

@@ -9,8 +9,8 @@ export const INITIAL_STATE = Immutable({
 const received = (state, action) =>
 state.merge({ users: action.users })
 
-const update = (state, action) =>
-state.merge({ users: action.users })
+// const update = (state, action) =>
+// state.merge({ users: action.users })
 
 const ACTION_HANDLERS = {
   [Types.ACTIVE_USERS_RECEIVED]: received,

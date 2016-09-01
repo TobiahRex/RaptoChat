@@ -27,10 +27,14 @@ const loginSuccess = () =>
 const loginFailure = (errorCode) =>
 ({ type: Types.LOGIN_FAILURE, errorCode })
 
+const logoutAttempt = () =>
+({ type: Types.LOGOUT_ATTEMPT })
+
+const logoutSuccess = () =>
+({ type: Types.LOGOUT_SUCCESS })
+
 const logoutFailure = () =>
 ({ type: Types.LOGOUT_FAILURE })
-
-const logout = () => ({ type: Types.LOGOUT })
 
 const startup = () => ({ type: Types.STARTUP })
 
@@ -51,7 +55,9 @@ export default {
   loginFailure,
   loginSuccess,
 
-  logout,
+  logoutAttempt,
+  logoutSuccess,
   logoutFailure,
+
   startup
 }
