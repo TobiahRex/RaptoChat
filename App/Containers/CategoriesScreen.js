@@ -53,7 +53,7 @@ class CategoriesScreen extends React.Component {
 
     // Datasource is always in state
     this.state = {
-      dataSource: ds.cloneWithRows(dataObjects)
+      dataSource: ds.cloneWithRows(this._getDataSource)
     }
   }
   componentWillMount () {
@@ -62,6 +62,7 @@ class CategoriesScreen extends React.Component {
     })
   }
   render () {
+    console.log('state.categories: ', this.state.categories)
     return(
       <View style={styles.container}>
         <AlertMessage title='Nothing to see here.  Move along.'
@@ -94,6 +95,17 @@ class CategoriesScreen extends React.Component {
   // returns true if the dataSource is empty
   _noRowData () {
     return this.state.dataSource.getRowCount() === 0
+  }
+  _getDataSource () {
+    let categories = this.state.categories
+    let categoriesArray = []
+    for (let key in categories) {
+      categoriesArray.push({
+        title: categories[key].desc,
+        image: categories[key].image
+       })
+    }
+    return categoriesArray
   }
 }
 /* ***********************************************************
