@@ -14,7 +14,7 @@ import {
 import { connect } from 'react-redux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import I18n from '../I18n/I18n.js'
-import styles from './Styles/ListviewExampleStyle'
+import styles from './Styles/ListviewGridExampleStyle'
 import Actions from '../Actions/Creators'
 import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 // For empty lists
@@ -57,7 +57,9 @@ class CategoriesScreen extends React.Component {
     }
   }
   componentWillMount () {
-    // TODO get all Categories from firebase
+    firebaseDB.ref('categories').once('value', (snapshot) => {
+      this.setState({ categories: snapshot.val() })
+    })
   }
   render () {
     return(

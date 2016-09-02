@@ -80,6 +80,10 @@ class PresentationScreen extends React.Component {
           Logout
         </RoundedButton>
 
+        <RoundedButton onPress={this.props.categories}>
+          Categories
+        </RoundedButton>
+
       </ScrollView>
     </View>
   )
@@ -96,6 +100,7 @@ const mapDispatchToProps = (dispatch) => {
     loginScreen: NavigationActions.login,
     register: NavigationActions.register,
     settings: NavigationActions.settings,
+    categories: NavigationActions.categories,
     logoutAttempt: () => dispatch(Actions.logoutAttempt()),
     logoutSuccess: () => dispatch(Actions.logoutSuccess()),
     logoutFailure: () => dispatch(Actions.logoutFailure()),
