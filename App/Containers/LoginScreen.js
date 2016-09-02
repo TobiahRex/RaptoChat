@@ -168,7 +168,7 @@ class LoginScreen extends React.Component {
             user = profileSnap.val()
             let settings = settingsSnap.val()
             let users = activeSnap.val()
-            let location = JSON.parse(this.state.lastPosition || this.state.location)
+            let location = JSON.parse(this.state.location || this.state.lastPosition)
             this.props.receivedUser(user, settings, location)
             this.props.receivedActiveUsers(users)
             NavigationActions.categories()
