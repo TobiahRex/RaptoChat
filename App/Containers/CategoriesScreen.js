@@ -19,6 +19,7 @@ import Actions from '../Actions/Creators'
 import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 // For empty lists
 import AlertMessage from '../Components/AlertMessageComponent'
+import Voice from 'react-native-android-voice'
 
 const firebaseAuth = firebase.auth()
 
@@ -79,6 +80,11 @@ class CategoriesScreen extends React.Component {
           contentContainerStyle={styles.listContent}
           dataSource={this.state.dataSource}
           renderRow={this._renderRow} />
+
+        <Voice
+          onPress={this._onPress}>
+          <Text>Say hello to my little friend!</Text>
+        </Voice>
       </View>
     )
   }
@@ -92,6 +98,9 @@ class CategoriesScreen extends React.Component {
         <Text style={styles.boldLabel}>{rowData.title}</Text>
       </View>
     )
+  }
+  _onPress = (e) => {
+    Voice.startSpeech('en')
   }
 }
 const mapStateToProps = (state) => {
