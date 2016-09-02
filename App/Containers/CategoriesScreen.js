@@ -1,19 +1,20 @@
 import React, {PropTypes} from 'react'
 import {
-  View,
+  Alert,
+  Image,
+  Keyboard,
+  LayoutAnimation,
+  ListView,
   ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
-  Keyboard,
-  LayoutAnimation,
-  Alert
+  View
 } from 'react-native'
 import { connect } from 'react-redux'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import I18n from '../I18n/I18n.js'
-import Styles from './Styles/LoginScreenStyle'
+import styles from './Styles/ListviewExampleStyle'
 import Actions from '../Actions/Creators'
 import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 // For empty lists
@@ -23,7 +24,7 @@ const firebaseAuth = firebase.auth()
 
 class CategoriesScreen extends React.Component {
   static propTypes = {
-    
+
   }
   constructor(props) {
     super(props)
@@ -48,7 +49,7 @@ class CategoriesScreen extends React.Component {
     *   (r1, r2) => r1.id !== r2.id}
     *************************************************************/
     // DataSource configured
-    const ds = new ListView.DataSource((r1, r2) => r1 !== r2)
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 
     // Datasource is always in state
     this.state = {
@@ -87,7 +88,6 @@ class CategoriesScreen extends React.Component {
       </View>
     )
   }
-
   // Used for friendly AlertMessage
   // returns true if the dataSource is empty
   _noRowData () {

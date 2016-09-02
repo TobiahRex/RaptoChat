@@ -171,7 +171,7 @@ class LoginScreen extends React.Component {
             let location = JSON.parse(this.state.lastPosition || this.state.location)
             this.props.receivedUser(user, settings, location)
             this.props.receivedActiveUsers(users)
-            NavigationActions.settings()
+            NavigationActions.categories()
           })
         })
       })
