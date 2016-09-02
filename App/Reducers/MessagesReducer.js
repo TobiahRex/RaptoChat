@@ -1,19 +1,21 @@
 import Types from '../Actions/Types'
 import Immutable from 'seamless-immutable'
-import { createReducer } from 'reduxSauce'
+import { createReducer } from 'reduxsauce'
 
 export const INITIAL_STATE = Immutable({
-  oor: null,
   old: null,
   que: null
 })
 
-const received = (state, action) => {
-  let messages = Object.assign({}, action.messages)
-}
+const receivedFiltered = (state, action) =>
+state.merge({ que: action.messages })
 
+const receivedOldMessage = (state, action) =>
+state.merge({ old: action.message })
 
 export const ACTION_HANDLERS = {
-  [Types.receivedMessages]: receivedMessages,
-  [Types.receivedNewMessage]: receivedNewMessage,
+  [Types.receivedFiltered]: receivedFiltered,
+  [Types.receivedOldMessage]: receivedOldMessage
 }
+
+export default createReducer(INITIAL_STATE, ACTION_HANDLERS)
