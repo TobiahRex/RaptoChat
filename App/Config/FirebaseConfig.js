@@ -3,6 +3,7 @@ import Actions from '../Actions/Creators'
 import { Actions as NavigationActions } from 'react-native-router-flux'
 import { dispatch } from '../../index.android'
 import firebase from 'firebase'
+import Geofire from 'geofire'
 
 const config = {
   apiKey: 'AIzaSyD0Nig7XcTpGY5KukFNR1cc3SWm_GvYXHs',
@@ -21,6 +22,7 @@ storageBucket: "testfirebase-50970.appspot.com",
 */
 firebase.initializeApp(config)
 const firebaseDB = firebase.database()
+
 
 // get the current list of fb active users immediately on start up.
 firebaseDB.ref('active').once('value', (snapshot) => {

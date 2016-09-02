@@ -1,7 +1,7 @@
 import Types from './Types'
 
-const receivedUser = (user, settings) =>
-({ type: Types.USER_RECEIVED, user, settings })
+const receivedUser = (user, settings, location) =>
+({ type: Types.USER_RECEIVED, user, settings, location })
 
 const receivedActiveUsers = (users) =>
 ({ type: Types.ACTIVE_USERS_RECEIVED, users })

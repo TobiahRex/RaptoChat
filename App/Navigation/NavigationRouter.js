@@ -9,6 +9,7 @@ import PresentationScreen from '../Containers/PresentationScreen'
 import LoginScreen from '../Containers/LoginScreen'
 import RegisterScreen from '../Containers/RegisterScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
+import CategoriesScreen from '../Containers/CategoriesScreen'
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
@@ -42,6 +43,10 @@ class NavigationRouter extends Component {
             <Scene key='settings'
               component={SettingsScreen}
               title='Settings' />
+
+            <Scene key='categories'
+              component={CategoriesScreen}
+              title='Categories' />
 
           </Scene>
         </Scene>
