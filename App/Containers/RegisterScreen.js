@@ -68,6 +68,8 @@ class RegisterScreen extends React.Component {
     this.setState({ visibleHeight: Metrics.screenHeight })
   }
   render() {
+    console.info('location: \n', JSON.parse(this.state.location))
+    console.info('lastPosition: \n', JSON.parse(this.state.lastPosition))
     const { email, password, passwordVerify, username } = this.state
     const { attempting } = this.props
     const editable = !attempting
