@@ -53,10 +53,11 @@ class CategoriesScreen extends React.Component {
 
     // Datasource is always in state
     this.state = {
+      categories: null,
       dataSource: ds.cloneWithRows(this._getDataSource)
     }
   }
-  componentWillMount () {
+  componentDidMount () {
     firebaseDB.ref('categories').once('value', (snapshot) => {
       this.setState({ categories: snapshot.val() })
     })
@@ -97,15 +98,20 @@ class CategoriesScreen extends React.Component {
     return this.state.dataSource.getRowCount() === 0
   }
   _getDataSource () {
-    let categories = this.state.categories
+    let categories = this.state.categories || null
     let categoriesArray = []
-    for (let key in categories) {
-      categoriesArray.push({
-        title: categories[key].desc,
-        image: categories[key].image
-       })
+    if (categories) {
+      for (let key in categories) {
+        categoriesArray.push({
+          title: categories[key].desc,
+          image: categories[key].image
+        })
+      }
+      return categoriesArray
+      console.log('categoriesArray: ', categoriesArray);
+    } else {
+      return [{ title: 'Empty', image: 'https://30secondrule.files.wordpress.com/2010/05/empty.jpg?w=595' }]
     }
-    return categoriesArray
   }
 }
 /* ***********************************************************
