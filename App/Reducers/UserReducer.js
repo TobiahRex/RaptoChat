@@ -7,10 +7,7 @@ export const INITIAL_STATE = Immutable({
   username: null,
   email: null,
   lastLogin: null,
-  location: {
-    lattitude: 0,
-    longitude: 0
-  },
+  location: null,
   photoUrl: null,
   settings: null
 })
@@ -21,10 +18,7 @@ state.merge({
   username: action.user.username,
   email: action.user.email,
   lastLogin: action.user.lastLogin,
-  location: {
-    latitude: action.user.lattitude,
-    longitude: action.user.longitude
-  },
+  location: action.location,
   registered: action.user.registered,
   photoUrl: action.user.photoUrl,
   settings: action.settings
