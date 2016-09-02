@@ -23,51 +23,58 @@ import AlertMessage from '../Components/AlertMessageComponent'
 const firebaseAuth = firebase.auth()
 
 class CategoriesScreen extends React.Component {
-  static propTypes = {
+  static propTypes = { }
 
-  }
   constructor(props) {
     super(props)
-    /* ***********************************************************
-    * STEP 1
-    * This is an array of objects with the properties you desire
-    * Usually this should come from Redux mapStateToProps
-    *************************************************************/
-    const dataObjects = [
-      {title: 'First Title', description: 'First Description'},
-      {title: 'Second Title', description: 'Second Description'},
-      {title: 'Third Title', description: 'Third Description'},
-      {title: 'Fourth Title', description: 'Fourth Description'},
-      {title: 'Fifth Title', description: 'Fifth Description'},
-      {title: 'Sixth Title', description: 'Sixth Description'},
-      {title: 'Seventh Title', description: 'Seventh Description'}
-    ]
-    /* ***********************************************************
-    * STEP 2
-    * Teach datasource how to detect if rows are different
-    * Make this function fast!  Perhaps something like:
-    *   (r1, r2) => r1.id !== r2.id}
-    *************************************************************/
-    // DataSource configured
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 
-    // Datasource is always in state
+    let dataSource = [
+      { title: 'Commute',
+        key: 'commute',
+        image: 'http://www.healthline.com/hlcmsresource/images/News/mental-health/022215-commute-thumb.jpg'
+      },
+      {
+        title: 'Road Rage',
+        key: 'rage',
+        image: 'http://i.huffpost.com/gen/1482570/images/o-ROAD-RAGE-facebook.jpg'
+      },
+      {
+        title: 'Road Trip',
+        key: 'trip',
+        image: 'http://getbg.net/upload/full/574017_povorot_polya_gorizont_zarya_nebo_mestnost_doroga__2048x1360_(www.GetBg.net).jpg'
+      },
+      {
+        title: 'Music',
+        key: 'music',
+        image: 'https://media.licdn.com/mpr/mpr/AAEAAQAAAAAAAAXpAAAAJDE0NWQ1ZmM2LTdkNTgtNGY0NC04MWM4LTg5OTQ2Yzk5NzJjMQ.jpg'
+      },
+      {
+        title: 'Sports',
+        key: 'sports',
+        image: 'https://zeno-devlab.s3.amazonaws.com/16793/photo/image/1455747797'
+      },
+      {
+        title: 'Technology',
+        key: 'tech',
+        image: 'http://images.dowjones.com/wp-content/uploads/sites/43/2015/10/11014854/Technology_CareersTeams_406x230.jpg'
+      },
+      {
+        title: 'Nearby Users',
+        key: 'nearby',
+        image: 'http://media.gettyimages.com/videos/radar-screen-video-id102082578?s=640x640'
+      }
+    ]
+
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
     this.state = {
-      categories: null,
-      dataSource: ds.cloneWithRows(this._getDataSource)
+      dataSource: ds.cloneWithRows(dataSource)
     }
   }
-  componentDidMount () {
-    firebaseDB.ref('categories').once('value', (snapshot) => {
-      this.setState({ categories: snapshot.val() })
-    })
-  }
+
   render () {
-    console.log('state.categories: ', this.state.categories)
-    return(
+    return (
       <View style={styles.container}>
-        <AlertMessage title='Nothing to see here.  Move along.'
-          show={this._noRowData()} />
+
         <ListView
           contentContainerStyle={styles.listContent}
           dataSource={this.state.dataSource}
@@ -75,62 +82,18 @@ class CategoriesScreen extends React.Component {
       </View>
     )
   }
-
-  /* ***********************************************************
-  * STEP 3
-  * `_renderRow` function -How each cell/row should be rendered
-  * It's our best practice to place a single component here:
-  *
-  * e.g.
-  return <MyCustomCell title={rowData.title} description={rowData.description} />
-  *************************************************************/
   _renderRow (rowData) {
     return (
       <View style={styles.row}>
+        <Image
+          source={{ uri: rowData.image }}
+          style={styles.imageStyle}
+          />
         <Text style={styles.boldLabel}>{rowData.title}</Text>
-        <Text style={styles.label}>{rowData.description}</Text>
       </View>
     )
   }
-  // Used for friendly AlertMessage
-  // returns true if the dataSource is empty
-  _noRowData () {
-    return this.state.dataSource.getRowCount() === 0
-  }
-  _getDataSource () {
-    let categories = this.state.categories || null
-    let categoriesArray = []
-    if (categories) {
-      for (let key in categories) {
-        categoriesArray.push({
-          title: categories[key].desc,
-          image: categories[key].image
-        })
-      }
-      return categoriesArray
-      console.log('categoriesArray: ', categoriesArray);
-    } else {
-      return [{ title: 'Empty', image: 'https://30secondrule.files.wordpress.com/2010/05/empty.jpg?w=595' }]
-    }
-  }
 }
-/* ***********************************************************
-* STEP 4
-* If your datasource is driven by Redux, you'll need to
-* reset it when new data arrives.
-* DO NOT! place `cloneWithRows` inside of render, since render
-* is called very often, and should remain fast!  Just replace
-* state's datasource on newProps.
-*
-* e.g.
-componentWillReceiveProps (newProps) {
-if (newProps.someData) {
-this.setState({
-dataSource: this.state.dataSource.cloneWithRows(newProps.someData)
-})
-}
-}
-*************************************************************/
 const mapStateToProps = (state) => {
   return {
     // ...redux state to props here

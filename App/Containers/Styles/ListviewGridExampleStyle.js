@@ -33,5 +33,11 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     flexWrap: 'wrap'
+  },
+  imageStyle: {
+    marginTop: 10,
+    height: 70,
+    width: 70,
+    borderRadius: 50
   }
 })

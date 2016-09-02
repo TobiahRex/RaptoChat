@@ -39,6 +39,9 @@ class RegisterScreen extends React.Component {
     }
   }
   componentWillMount () {
+    navigator.geolocation.getCurrentPosition((position))
+
+
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide)
   }

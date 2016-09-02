@@ -29,7 +29,7 @@ class NavigationRouter extends Component {
             <Scene initial
               key='presentationScreen'
               component={PresentationScreen}
-              title='Ignite'
+              title='WINGMAN'
               renderLeftButton={NavItems.hamburgerButton} />
 
             <Scene key='login'
