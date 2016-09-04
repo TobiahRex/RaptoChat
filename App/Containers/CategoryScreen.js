@@ -11,8 +11,8 @@ class CategoryScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      que: this.props.messages.que || 'empty',
-      old: this.props.messages.old || 'empty'
+      que: this.props.que,
+      old: this.props.old
     }
   }
 
@@ -35,10 +35,9 @@ CategoryScreen.propTypes = {
 }
 
 const mapStateToProps = (state) => {
-  console.info('category state: ', state)
   return {
-    que: state.messages.que,
-    old: state.messages.old
+    que: state.messages.que || 'empty',
+    old: state.messages.old || 'empty'
   }
 }
 const mapDispatchToProps = (dispatch) => {
