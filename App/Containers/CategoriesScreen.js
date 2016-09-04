@@ -82,13 +82,13 @@ class CategoriesScreen extends React.Component {
       results: [],
       partialResults: [],
     };
-    Voice.onSpeechStart = this.onSpeechStart.bind(this);
-    Voice.onSpeechRecognized = this.onSpeechRecognized.bind(this);
-    Voice.onSpeechEnd = this.onSpeechEnd.bind(this);
-    Voice.onSpeechError = this.onSpeechError.bind(this);
-    Voice.onSpeechResults = this.onSpeechResults.bind(this);
-    Voice.onSpeechPartialResults = this.onSpeechPartialResults.bind(this);
-    Voice.onSpeechVolumeChanged = this.onSpeechVolumeChanged.bind(this);
+    Voice.onSpeechStart = this.onSpeechStart;
+    Voice.onSpeechRecognized = this.onSpeechRecognized;
+    Voice.onSpeechEnd = this.onSpeechEnd;
+    Voice.onSpeechError = this.onSpeechError;
+    Voice.onSpeechResults = this.onSpeechResults;
+    Voice.onSpeechPartialResults = this.onSpeechPartialResults;
+    Voice.onSpeechVolumeChanged = this.onSpeechVolumeChanged;
   }
 
   render () {
@@ -101,6 +101,7 @@ class CategoriesScreen extends React.Component {
           dataSource={this.state.dataSource}
           renderRow={this._renderRow} />
         <View style={testStyle.container}>
+
           <TouchableHighlight onPress={this._startRecognizing}>
             <Image
               style={testStyle.button}
@@ -112,43 +113,62 @@ class CategoriesScreen extends React.Component {
       </View>
     )
   }
-  onSpeechStart(e) {
+  beginEvaluation = () => {
+    setTimeout(() => {
+      let results = this.state.results[0] || this.state.partialResults[0] || 'results are empty';
+      results = results.match(/commute|road rage|road trip|music|sports|technology|nearby users/gi)[0]
+
+      switch(results) {
+        case 'commute' : console.info('Ok Going to Commute'); break;
+        case 'road rage': console.info('Ok going to Road Rage'); break;
+        case 'road trip': console.info('Ok going to Road Trip'); break;
+        case 'music': console.info('Ok going to Music'); break;
+        case 'sports': console.info('Ok going to sports'); break;
+        case 'technology': console.info('Ok going to technology');
+        case 'nearby users': console.info('Ok going to nearby users');
+        default: console.error('Could not recognize that option');
+      }
+
+    }, 5000)
+  }
+
+  onSpeechStart = (e) => {
     this.setState({
       started: '√',
     });
   }
-  onSpeechRecognized(e) {
+  onSpeechRecognized = (e) => {
     this.setState({
       recognized: '√',
     });
   }
-  onSpeechEnd(e) {
+  onSpeechEnd = (e) => {
     this.setState({
       end: '√',
     });
   }
-  onSpeechError(e) {
+  onSpeechError = (e) => {
     this.setState({
       error: e.error,
     });
   }
-  onSpeechResults(e) {
+  onSpeechResults = (e) => {
     this.setState({
       results: e.value,
     });
   }
-  onSpeechPartialResults(e) {
+  onSpeechPartialResults = (e) => {
     this.setState({
       partialResults: e.value,
     });
   }
-  onSpeechVolumeChanged(e) {
-    console.log('e: ', e)
+  onSpeechVolumeChanged = (e) => {
     this.setState({
       pitch: e.value,
     });
   }
   _startRecognizing = (e) => {
+    this.beginEvaluation()
     this.setState({
       recognized: '',
       pitch: '',
@@ -157,7 +177,7 @@ class CategoriesScreen extends React.Component {
       results: [],
       partialResults: [],
     });
-    const error = console.log(Voice.start('en'));
+  const error = Voice.start('en')
     if (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }
@@ -168,13 +188,13 @@ class CategoriesScreen extends React.Component {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }
   }
-  _cancelRecognizing(e) {
+  _cancelRecognizing = (e) => {
     const error = Voice.cancel();
     if (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }
   }
-  _destroyRecognizer(e) {
+  _destroyRecognizer = (e) => {
     const error = Voice.destroy();
     if (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
@@ -185,6 +205,10 @@ class CategoriesScreen extends React.Component {
   _renderRow (rowData) {
     return (
       <View style={styles.row}>
+          <Image
+            source={{ uri: rowData.image }}
+            style={styles.imageStyle}
+            />
         <Text style={styles.boldLabel}>{rowData.title}</Text>
       </View>
     )
