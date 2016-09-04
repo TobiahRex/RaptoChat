@@ -124,8 +124,8 @@ class CategoriesScreen extends React.Component {
         case 'road trip': console.info('Ok going to Road Trip'); break;
         case 'music': console.info('Ok going to Music'); break;
         case 'sports': console.info('Ok going to sports'); break;
-        case 'technology': console.info('Ok going to technology');
-        case 'nearby users': console.info('Ok going to nearby users');
+        case 'technology': console.info('Ok going to technology'); break;
+        case 'nearby users': console.info('Ok going to nearby users'); break;
         default: console.error('Could not recognize that option');
       }
 
