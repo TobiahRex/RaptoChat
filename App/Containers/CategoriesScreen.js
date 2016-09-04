@@ -13,6 +13,7 @@ import {
   TouchableHighlight,
   View,
   StyleSheet,
+  ProgressBarAndroid,
 } from 'react-native'
 import { Images } from '../Themes'
 import { connect } from 'react-redux'
@@ -109,12 +110,12 @@ class CategoriesScreen extends React.Component {
           renderRow={this._renderRow} />
 
         <View style={styles.container}>
-          <TouchableHighlight onPress={this._startRecognizing}>
+          <TouchableOpacity onPress={this._startRecognizing}>
             <Image
               style={styles.button}
               source={Images.button}
               />
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
 
       </View>

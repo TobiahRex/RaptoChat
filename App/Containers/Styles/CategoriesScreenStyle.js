@@ -6,7 +6,7 @@ export default StyleSheet.create({
   button: {
     width: 120,
     height: 120,
-    marginBottom: 50
+    marginBottom: 70
   },
   container: {
     // flex: 1,
