@@ -1,6 +1,8 @@
 package com.raptochat;
 
 import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactPackage;
+
 
 public class MainActivity extends ReactActivity {
 

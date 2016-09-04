@@ -1,3 +1,4 @@
+
 package com.raptochat;
 
 import android.app.Application;
@@ -11,7 +12,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
-import com.wmjmc.reactspeech.VoicePackage;
+import com.wenkesj.voice.VoicePackage;
 
 import java.util.Arrays;
 import java.util.List;
