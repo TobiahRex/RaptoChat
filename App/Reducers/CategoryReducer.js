@@ -3,7 +3,7 @@ import Immutable from 'seamless-immutable'
 import { createReducer } from 'reduxsauce'
 
 export const INITIAL_STATE = Immutable({
-  category: 'unknown',
+  category: null,
   category_messages: null,
   category_users: null,
 })

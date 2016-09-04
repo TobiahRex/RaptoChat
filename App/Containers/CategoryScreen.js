@@ -12,7 +12,8 @@ class CategoryScreen extends React.Component {
     super(props)
     this.state = {
       que: this.props.que,
-      old: this.props.old
+      old: this.props.old,
+      category: this.props.category
     }
   }
 
@@ -23,7 +24,7 @@ class CategoryScreen extends React.Component {
 
         <View style={styles.row}>
           <Text
-            style={styles.rowLabel}>Category</Text>
+            style={styles.rowLabel}>Category {this.state.category}</Text>
         </View>
       </ScrollView>
     )
@@ -36,6 +37,7 @@ CategoryScreen.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    category: state.activeCategory.category || 'unkown',
     que: state.messages.que || 'empty',
     old: state.messages.old || 'empty'
   }

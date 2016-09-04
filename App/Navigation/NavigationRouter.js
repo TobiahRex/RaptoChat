@@ -21,7 +21,7 @@ class NavigationRouter extends React.Component {
     super(props)
 
     this.state = {
-      activeCategory: this.props.activeCategory || 'unknown'
+      category: this.props.category
     }
   }
   render () {
@@ -59,7 +59,7 @@ class NavigationRouter extends React.Component {
 
             <Scene key='activeCategory'
               component={ActiveCategory}
-              title={this.state.activeCategory} />
+              title={this.props.category || 'Chat'} />
 
           </Scene>
         </Scene>
@@ -69,8 +69,9 @@ class NavigationRouter extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log('state.activeCategory: ', state.activeCategory.category)
   return {
-    activeCategory: state.activeCategory.category
+    category: state.activeCategory.category
   }
 }
 const mapDispatchToProps = (dispatch) => {
