@@ -73,11 +73,11 @@ class CategoriesScreen extends React.Component {
 
     this.state = {
       dataSource: ds.cloneWithRows(dataSource),
-      recognized: '',
+      recognized: false,
       pitch: '',
       error: '',
-      end: '',
-      started: '',
+      end: false,
+      started: false,
       results: [],
       partialResults: [],
     }

@@ -5,11 +5,24 @@ import {
   ScrollView,
   Text
 } from 'react-native'
+import Voice from 'react-native-voice'
 
 class RecordMessage extends React.Component {
   constructor (props) {
     super(props)
-
+    this.state = {
+      msg: '',
+      msgVoice: 'willbadguy22k'
+      user_message: this.props.user_message,
+      user_message_audio: this.props.user_message_audio
+    }
+    Voice.onSpeechStart = this._onSpeechStart
+    Voice.onSpeechRecognized = this._onSpeechRecognized
+    Voice.onSpeechEnd = this._onSpeechEnd
+    Voice.onSpeechError = this._onSpeechError
+    Voice.onSpeechResults = this._onSpeechResults
+    Voice.onSpeechPartialResults = this._onSpeechPartialResults
+    Voice.onSpeechVolumeChanged = this._onSpeechVolumeChanged
   }
   render () {
     return (
@@ -17,6 +30,13 @@ class RecordMessage extends React.Component {
         <Text>Record Message</Text>
       </ScrollView>
     )
+  }
+  _onSpeechStart = (e) => {
+    this.setState({
+      start: true,
+      results: [],
+      partialResults: [],
+    })
   }
 }
 const mapStateToProps = (state) => {
