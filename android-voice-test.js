@@ -24,6 +24,7 @@ import { firebase, firebaseDB } from '../Config/FirebaseConfig'
 // For empty lists
 import AlertMessage from '../Components/AlertMessageComponent'
 import Voice from 'react-native-voice'
+console.log('Voice: ', Voice)
 
 const firebaseAuth = firebase.auth()
 
@@ -82,13 +83,13 @@ class CategoriesScreen extends React.Component {
       results: [],
       partialResults: [],
     };
-    Voice.onSpeechStart = this.onSpeechStart.bind(this);
-    Voice.onSpeechRecognized = this.onSpeechRecognized.bind(this);
-    Voice.onSpeechEnd = this.onSpeechEnd.bind(this);
-    Voice.onSpeechError = this.onSpeechError.bind(this);
-    Voice.onSpeechResults = this.onSpeechResults.bind(this);
-    Voice.onSpeechPartialResults = this.onSpeechPartialResults.bind(this);
-    Voice.onSpeechVolumeChanged = this.onSpeechVolumeChanged.bind(this);
+    Voice.onSpeechStart = this.onSpeechStart;
+    Voice.onSpeechRecognized = this.onSpeechRecognized;
+    Voice.onSpeechEnd = this.onSpeechEnd;
+    Voice.onSpeechError = this.onSpeechError;
+    Voice.onSpeechResults = this.onSpeechResults;
+    Voice.onSpeechPartialResults = this.onSpeechPartialResults;
+    Voice.onSpeechVolumeChanged = this.onSpeechVolumeChanged;
   }
 
   render () {
@@ -100,50 +101,118 @@ class CategoriesScreen extends React.Component {
           contentContainerStyle={styles.listContent}
           dataSource={this.state.dataSource}
           renderRow={this._renderRow} />
-        <View style={testStyle.container}>
-          <TouchableHighlight onPress={this._startRecognizing}>
-            <Image
-              style={testStyle.button}
-              source={Images.button}
-              />
-          </TouchableHighlight>
-        </View>
+
+        <Text style={testStyle.welcome}>
+          Welcome to React Native Voice!
+        </Text>
+        <Text style={testStyle.instructions}>
+          Press the button and start speaking when you hear the beep.
+        </Text>
+        <Text
+          style={testStyle.stat}>
+          {`Started: ${this.state.started}`}
+        </Text>
+        <Text
+          style={testStyle.stat}>
+          {`Recognized: ${this.state.recognized}`}
+        </Text>
+        <Text
+          style={testStyle.stat}>
+          {`Pitch: ${this.state.pitch}`}
+        </Text>
+        <Text
+          style={testStyle.stat}>
+          {`Error: ${this.state.error}`}
+        </Text>
+        <Text
+          style={testStyle.stat}>
+          Results
+        </Text>
+        {this.state.results.map((result, index) => {
+          return (
+            <Text
+              key={`result-${index}`}
+              style={testStyle.stat}>
+              {result}
+            </Text>
+          )
+        })}
+        <Text
+          style={testStyle.stat}>
+          Partial Results
+        </Text>
+        {this.state.partialResults.map((result, index) => {
+          return (
+            <Text
+              key={`partial-result-${index}`}
+              style={testStyle.stat}>
+              {result}
+            </Text>
+          )
+        })}
+        <Text
+          style={testStyle.stat}>
+          {`End: ${this.state.end}`}
+        </Text>
+        <TouchableHighlight onPress={this._startRecognizing}>
+          <Image
+            style={testStyle.button}
+            source={Images.button}
+            />
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._stopRecognizing}>
+          <Text
+            style={testStyle.action}>
+            Stop Recognizing
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._cancelRecognizing}>
+          <Text
+            style={testStyle.action}>
+            Cancel
+          </Text>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._destroyRecognizer}>
+          <Text
+            style={testStyle.action}>
+            Destroy
+          </Text>
+        </TouchableHighlight>
 
       </View>
     )
   }
-  onSpeechStart(e) {
+  onSpeechStart = (e) => {
     this.setState({
       started: '√',
     });
   }
-  onSpeechRecognized(e) {
+  onSpeechRecognized = (e) => {
     this.setState({
       recognized: '√',
     });
   }
-  onSpeechEnd(e) {
+  onSpeechEnd = (e) => {
     this.setState({
       end: '√',
     });
   }
-  onSpeechError(e) {
+  onSpeechError = (e) => {
     this.setState({
       error: e.error,
     });
   }
-  onSpeechResults(e) {
+  onSpeechResults = (e) => {
     this.setState({
       results: e.value,
     });
   }
-  onSpeechPartialResults(e) {
+  onSpeechPartialResults = (e) => {
     this.setState({
       partialResults: e.value,
     });
   }
-  onSpeechVolumeChanged(e) {
-    console.log('e: ', e)
+  onSpeechVolumeChanged = (e) => {
     this.setState({
       pitch: e.value,
     });
@@ -157,7 +226,7 @@ class CategoriesScreen extends React.Component {
       results: [],
       partialResults: [],
     });
-    const error = console.log(Voice.start('en'));
+    const error = Voice.start('en');
     if (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }
@@ -168,13 +237,13 @@ class CategoriesScreen extends React.Component {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }
   }
-  _cancelRecognizing(e) {
+  _cancelRecognizing = (e) => {
     const error = Voice.cancel();
     if (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
     }
   }
-  _destroyRecognizer(e) {
+  _destroyRecognizer = (e) => {
     const error = Voice.destroy();
     if (error) {
       ToastAndroid.show(error, ToastAndroid.SHORT);
@@ -185,6 +254,10 @@ class CategoriesScreen extends React.Component {
   _renderRow (rowData) {
     return (
       <View style={styles.row}>
+        <Image
+          source={{ uri: rowData.image }}
+          style={styles.imageStyle}
+          />
         <Text style={styles.boldLabel}>{rowData.title}</Text>
       </View>
     )
@@ -207,14 +280,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen)
 
 const testStyle = StyleSheet.create({
   button: {
-    width: 150,
-    height: 150,
+    width: 50,
+    height: 50,
   },
   container: {
-    flex: .5,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 20,
