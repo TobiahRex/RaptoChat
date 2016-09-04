@@ -37,11 +37,11 @@ CategoryScreen.propTypes = {
 }
 const mapStateToProps = (state) => {
   return {
+    que: state.messages.que || 'empty',
+    old: state.messages.old || 'empty',
     category: state.activeCategory.category || 'Unknown',
     category_messages: state.activeCategory.category_messages,
     category_users: state.activeCategory.category_users,
-    que: state.messages.que || 'empty',
-    old: state.messages.old || 'empty',
     user_message: state.activeCategory.user_message,
     user_message_audio: state.activeCategory.user_message_audio,
     error: state.activeCategory.error
