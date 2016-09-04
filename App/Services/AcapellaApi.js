@@ -1,7 +1,6 @@
 import { create } from 'apisauce'
 
 const create = (baseURL = 'http://vaas.acapella-group.com') => {
-
   const api = create({ baseURL })
 
   const getAudioMsg = (msg, msgVoice) => {
