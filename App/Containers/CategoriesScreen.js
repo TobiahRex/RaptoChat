@@ -129,40 +129,48 @@ class CategoriesScreen extends React.Component {
         case 'commute': {
           console.info('Ok Going to Commute')
           this.props.setActiveCategory('Commute')
+          NavigationActions.activeCategory()
           break
         }
         case 'road rage': {
           console.info('Ok going to Road Rage')
           this.props.setActiveCategory('Road Rage')
+          NavigationActions.activeCategory()
           break
         }
         case 'road trip': {
           console.info('Ok going to Road Trip')
           this.props.setActiveCategory('Road Trip')
+          NavigationActions.activeCategory()
           break
         }
         case 'music': {
           console.info('Ok going to Music')
           this.props.setActiveCategory('Music')
+          NavigationActions.activeCategory()
           break
         }
         case 'sports': {
           console.info('Ok going to sports')
           this.props.setActiveCategory('Sports')
+          NavigationActions.activeCategory()
           break
         }
         case 'technology': {
           console.info('Ok going to technology')
           this.props.setActiveCategory('Technology')
+          NavigationActions.activeCategory()
           break
         }
         case 'nearby users': {
           console.info('Ok going to nearby users')
           this.props.setActiveCategory('Nearby Users')
+          NavigationActions.activeCategory()
           break
         }
         default: {
           console.error('Could not recognize that option')
+          Alert.alert('Error','Sorry I could\'nt understand you. Please try again. ')
           break
         }
       }

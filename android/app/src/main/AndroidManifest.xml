@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.raptochat"
   android:windowSoftInputMode="adjustResize"
-  android:configChange="keyboard|keyboardHidden|orientation|screenSize"
+  android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
   android:versionCode="1"
   android:versionName="1.0">
 

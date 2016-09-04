@@ -17,7 +17,7 @@ import ActiveCategory from '../Containers/CategoryScreen'
 ***************************/
 
 class NavigationRouter extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {

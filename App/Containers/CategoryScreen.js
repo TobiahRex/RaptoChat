@@ -7,12 +7,12 @@ import {
 import styles from './Styles/SettingsStyle'
 import { connect } from 'react-redux'
 
-class SettingsScreen extends React.Component {
+class CategoryScreen extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      que: this.props.messages.que,
-      old: this.props.messages.old
+      que: this.props.messages.que || 'empty',
+      old: this.props.messages.old || 'empty'
     }
   }
 
@@ -30,11 +30,12 @@ class SettingsScreen extends React.Component {
   }
 }
 
-SettingsScreen.propTypes = {
+CategoryScreen.propTypes = {
 
 }
 
 const mapStateToProps = (state) => {
+  console.info('category state: ', state)
   return {
     que: state.messages.que,
     old: state.messages.old
@@ -46,4 +47,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryScreen)
