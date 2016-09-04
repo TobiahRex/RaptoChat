@@ -38,6 +38,9 @@ const logoutFailure = () =>
 
 const startup = () => ({ type: Types.STARTUP })
 
+const setActiveCategory = (category) =>
+({ type: Types.SET_ACTIVE_CATEGORY, category })
+
 /**
 Makes available all the action creators we've created.
 */
@@ -59,5 +62,7 @@ export default {
   logoutSuccess,
   logoutFailure,
 
-  startup
+  startup,
+
+  setActiveCategory
 }

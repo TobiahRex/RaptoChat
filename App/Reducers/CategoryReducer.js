@@ -18,9 +18,13 @@ state.merge({
   category_users: action.users
 })
 
+const receivedActiveCategory = (state, action) =>
+state.merge({ category: action.category })
+
 const ACTION_HANDLERS = {
   [Types.CAT_MSGS_RECEIVED]: receivedMessages,
-  [Types.CAT_USERS_RECEIVED]: receivedUsers
+  [Types.CAT_USERS_RECEIVED]: receivedUsers,
+  [Types.SET_ACTIVE_CATEGORY]: receivedActiveCategory
 }
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS)

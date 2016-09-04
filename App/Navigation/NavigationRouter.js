@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Router, Scene } from 'react-native-router-flux'
+import { connect } from 'react-redux'
 import Styles from './Styles/NavigationContainerStyle'
 import NavigationDrawer from './NavigationDrawer'
 import NavItems from './NavItems'
@@ -10,11 +11,19 @@ import LoginScreen from '../Containers/LoginScreen'
 import RegisterScreen from '../Containers/RegisterScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import CategoriesScreen from '../Containers/CategoriesScreen'
+import ActiveCategory from '../Containers/CategoryScreen'
 /* **************************
 * Documentation: https://github.com/aksonov/react-native-router-flux
 ***************************/
 
-class NavigationRouter extends Component {
+class NavigationRouter extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeCategory: this.props.activeCategory || 'unknown'
+    }
+  }
   render () {
     return (
       <Router>
@@ -48,6 +57,10 @@ class NavigationRouter extends Component {
               component={CategoriesScreen}
               title='Categories' />
 
+            <Scene key='activeCategory'
+              component={ActiveCategory}
+              title={this.state.activeCategory} />
+
           </Scene>
         </Scene>
       </Router>
@@ -55,4 +68,15 @@ class NavigationRouter extends Component {
   }
 }
 
-export default NavigationRouter
+const mapStateToProps = (state) => {
+  return {
+    activeCategory: state.activeCategory.category
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationRouter)
