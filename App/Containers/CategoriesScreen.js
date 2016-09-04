@@ -180,17 +180,17 @@ class CategoriesScreen extends React.Component {
 
   onSpeechStart = (e) => {
     this.setState({
-      started: 'true',
+      started: true,
     })
   }
   onSpeechRecognized = (e) => {
     this.setState({
-      recognized: 'true',
+      recognized: true,
     })
   }
   onSpeechEnd = (e) => {
     this.setState({
-      end: 'true',
+      end: true,
     })
   }
   onSpeechError = (e) => {
@@ -217,10 +217,10 @@ class CategoriesScreen extends React.Component {
   _startRecognizing = (e) => {
     this._beginEvaluation()
     this.setState({
-      recognized: '',
+      recognized: false,
       pitch: '',
       error: '',
-      started: '',
+      started: false,
       results: [],
       partialResults: [],
     })
