@@ -14,6 +14,6 @@ export default StyleSheet.create({
   },
   textColor: {
     marginTop: 10,
-    color: Colors.snow,
+    color: Colors.snow
   }
 })
