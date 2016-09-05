@@ -11,6 +11,12 @@ export default StyleSheet.create({
     margin: Metrics.baseMargin,
     borderRadius: 4
   },
+  label: {
+    color: Colors.snow,
+    // alignSelf: 'center',
+    textAlign: 'left',
+    fontSize: 24
+  },
   row: {
     paddingVertical: Metrics.doubleBaseMargin,
     paddingHorizontal: Metrics.doubleBaseMargin

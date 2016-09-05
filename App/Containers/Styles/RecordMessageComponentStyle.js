@@ -4,8 +4,8 @@ import { ApplicationStyles, Metrics, Colors } from '../../Themes'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   recordButton: {
-    width: 75,
-    height: 75
+    width: 100,
+    height: 100
   },
   container: {
     flex: 1,
@@ -13,6 +13,7 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   textColor: {
+    marginTop: 10,
     color: Colors.snow,
   }
 })
